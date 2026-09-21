@@ -1,8 +1,11 @@
 %% 1-Dimensional Implicit Heat Analysis with conduction, convection, and radiation
 clear;
 
-% Access Material Properties
-inputfile = 'Materials/graphiteParaPlane.txt';
+here = fileparts(mfilename('fullpath'));
+inputfile = fullfile(here,'Materials','graphiteParaPlane.txt');
+[fidmat, msg] = fopen(inputfile,'r');
+assert(fidmat > 0, 'Could not open "%s": %s', inputfile, msg);
+
 fig = 1;
 fidmat = fopen(inputfile,'r');
 data = struct;

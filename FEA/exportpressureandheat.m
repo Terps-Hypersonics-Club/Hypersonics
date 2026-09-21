@@ -1,5 +1,6 @@
 %% Clear Workspace
 clear; clc; close all;
+addpath(fullfile(fileparts(mfilename('fullpath')), 'Calls'));
 
 %% File Names
 vtkFile   = 'surf_000034193.vtk';

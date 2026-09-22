@@ -1,0 +1,16 @@
+*SET, q0, 1000.0                 ! base flux [W/m^2]
+
+! --- Time-dependent table q(t) ---
+*DIM, qtab, TABLE, 3,1,1, TIME     ! 3 points, independent var = TIME
+qtab(1,1) =  0                    ! t = 0   → q0
+qtab(2,1) =  q0                  ! t = 5   → 2q0
+qtab(3,1) =  2*q0                  ! t = 10  → 2q0
+*TAXIS, qtab, 1, 0, 10             ! axis #1 spans 0..10 s (nonuniform values ok)
+
+! Scope your surface elements (Named Selection)
+*SET, comp_elems, 'SURFACE_ELEMENTS'
+cm,   selElems, %comp_elems%
+esel, s, comp, , selElems
+
+SFEDELE, ALL, , HFLUX
+SFE,     ALL, , HFLUX, , %qtab%     ! apply table as the value

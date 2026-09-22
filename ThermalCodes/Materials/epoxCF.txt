@@ -1,0 +1,27 @@
+
+Record name:	Epoxy/HS carbon fiber, woven prepreg, QI lay-up
+Record origin:	In-house data
+Data source:	Exported from Granta EduPack 2022 R2
+Table: MaterialUniverse
+Record: Epoxy/HS carbon fiber, woven prepreg, QI lay-up
+Tensile modulus [Pa]:	4.616e+10
+Tensile strength, yield [Pa]:	5.402e+8
+Tensile strength, ultimate [Pa]:	5.402e+8
+Thermal conductivity [W/m.°C]:	1.541
+Electrical resistivity [ohm.m]:	0.004078
+Thermal expansion coefficient [strain/°C]:	1.270e-5
+Maximum service temperature [K]:	451.4
+UNS number:	
+Glass transition temperature [K]:	411.2
+Equivalents:	Cycom; Fiberdux; Scotchply
+Specific heat capacity [J/kg.°C]:	1019
+Tensile elongation [strain]:	0.008839
+Designation:	Epoxy (EP) matrix, high strength carbon fiber woven fabric prepreg, quasi-isotropic laminate [0/90,+45/-45]s (woven fabric prepreg, fiber Vf:0.48-0.58, autoclave cure at 120-180°C, 6-7 bar)
+Density [kg/m^3]:	1575
+Composition:	Epoxy + Carbon fiber reinforcement
+Poisson's ratio:	0.337
+Base material:	EP (Epoxy resin)
+Condition:	
+Electrical conductivity [Siemens/m]:	244.9
+Electrical resistivity [1/Siemens/m]:	0.004083
+

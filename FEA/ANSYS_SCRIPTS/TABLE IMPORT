@@ -1,0 +1,34 @@
+!   Commands inserted into this file will be executed just prior to the ANSYS SOLVE command.
+!   These commands may supersede command settings set by Workbench.
+
+!   Active UNIT system in Workbench when this object was created:  Metric (m, kg, N, s, V, A)
+!   NOTE:  Any data that requires units (such as mass) is assumed to be in the consistent solver unit system.
+!                See Solving Units in the help system for more information.
+
+
+! --- Pre-solve Commands (APDL) ---
+ALLSEL,ALL
+
+/PREP7
+*DIM, heatFluxData, TABLE, 3, 1,1, FACEID, HEATFLUX
+*TREAD, heatFluxData,'C:\Users\kdk\Documents\PyMechanical\3val2colheatflux','CSV', , 1
+
+!DIM, heatFluxData2, TABLE, 11612, 1, 1, FACEID, HEATFLUX
+!*TREAD, heatFluxData2,'C:\Users\kdk\Documents\PyMechanical\allval2colheatflux','CSV', , 1
+
+!*stat, heatFluxData,,,0
+*stat, heatFluxData,,,0
+
+SFEDELE,ALL,,HFLUX ! Clear heat fluxes if prior remain
+
+!/SOLU
+!SFELIST, ALL
+! Prep for loop
+!*DO, index, 1, 11612, 1
+!    SFE,index,,HFLUX,,heatFluxData2(index,1,1) ! Apply heat flux
+!*ENDDO
+
+!SFELIST              
+
+
+ALLSEL,ALL

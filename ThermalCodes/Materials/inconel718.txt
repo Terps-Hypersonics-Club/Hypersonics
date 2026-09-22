@@ -1,0 +1,171 @@
+
+Record name:	Nickel-chromium alloy, INCONEL 718, solution treated
+Record origin:	In-house data
+Data source:	Exported from Granta EduPack 2022 R2
+Table: MaterialUniverse
+Record: Nickel-chromium alloy, INCONEL 718, solution treated
+Tensile modulus [Pa]:	2.081e+11
+Tensile strength, yield [Pa]:	7.612e+8
+Tensile strength, ultimate [Pa]:	8.694e+8
+Thermal conductivity [W/m.°C]:	12.07
+Electrical resistivity [ohm.m]:	1.199e-6
+Thermal expansion coefficient [strain/°C]:	1.310e-5
+Thermal expansion coefficient with temperature [K], [strain/°C]:	
+    32.95, 9.083e-6
+    156.4, 1.090e-5
+    279.7, 1.219e-5
+    403, 1.306e-5
+    526.3, 1.361e-5
+    649.7, 0.000014
+    773, 1.435e-5
+    896.3, 1.484e-5
+    1020, 1.563e-5
+    1143, 1.690e-5
+Reference temperature, CTE [K]:	293.1
+Tensile modulus with temperature [K], [Pa]:	
+    3.05, 2.113e+11
+    154.1, 2.066e+11
+    305.2, 1.978e+11
+    456.4, 1.900e+11
+    607.5, 1.829e+11
+    758.5, 1.746e+11
+    909.7, 1.637e+11
+    1061, 1.485e+11
+    1212, 1.274e+11
+    1363, 9.877e+10
+Maximum service temperature [K]:	940.9
+Tensile strength, yield with temperature [K], [Pa]:	
+    293, 7.712e+8
+    328.8, 7.574e+8
+    364.6, 7.462e+8
+    400.4, 7.366e+8
+    436.1, 7.278e+8
+    472, 7.195e+8
+    507.8, 7.114e+8
+    543.5, 7.037e+8
+    579.3, 6.965e+8
+    615.2, 6.897e+8
+    650.8, 6.832e+8
+    686.7, 6.767e+8
+    722.5, 6.694e+8
+    758.3, 6.603e+8
+    794, 6.475e+8
+    829.8, 6.289e+8
+    865.7, 6.081e+8
+    901.5, 5.818e+8
+    937.3, 5.256e+8
+    973, 3.964e+8
+UNS number:	N07718
+Equivalents:	ALTEMP 718 Solution treated, ATI Allegheny Ludlum (USA); Altemp; C50TF89, B50T68, B50TF16A, GE (USA); CPW407, Pratt & Whitney (USA); DMD423.32, SNECMA (FRANCE); EMS 55458, Garrett (USA); HAYNES 718, Haynes International Inc. (USA); Haynes; INCONEL 718, Special Metals Corp. (USA); Inconel; LA213, Turbomeca (FRANCE); MSRR 7132, MSRR 7228, Rolls Royce (UK); Nicrofer; PWA 649, Pratt & Whitney (USA); PYROMET ALLOY 718, Carpenter Technology Corp. (USA); Pyromet; SUPERMET 718, Firth Rixson (USA); Supermet; Udimar; Unitemp; WA2225.3, MTU (GERMANY)
+Specific heat capacity [J/kg.°C]:	448.9
+Tensile elongation [strain]:	0.4183
+Designation:	Nickel-chromium alloy, INCONEL 718, solution treated, wrought (Ni-Cr alloy)
+Density [kg/m^3]:	8221
+Composition:	Ni50-55 / Cr17-21 / Fe11-25 / Mo2.8-3.3 / Nb2.4-2.8 / Ta2.4-2.8 / Ti0.65-1.2 / Al0.2-0.8 (impurities: Co<1, Mn<0.35, Si<0.35, Cu<0.3, C<0.08, P<0.015, S<0.015, B<0.006)
+Nb + Ta = 4.75 to 5.5
+Poisson's ratio:	0.2959
+Base material:	Ni (Nickel)
+Condition:	Solution treated
+Specific heat capacity with temperature [K], [J/kg.°C]:	
+    293, 421.6
+    407.5, 462.1
+    521.8, 483
+    636.3, 499.4
+    750.8, 522.3
+    865.3, 559.4
+    979.7, 614.6
+    1094, 688.3
+    1209, 777.1
+    1323, 874.2
+Thermal conductivity with temperature [K], [W/m.°C]:	
+    273.1, 10.92
+    313.1, 11.59
+    353.1, 12.25
+    393.1, 12.92
+    433.1, 13.59
+    473.1, 14.26
+    513.2, 14.92
+    553.2, 15.59
+    593.2, 16.26
+    633.2, 16.93
+    673.2, 17.61
+    713.2, 18.28
+    753.2, 18.95
+    793.2, 19.62
+    833.2, 20.3
+    873.2, 20.97
+    913.2, 21.64
+    953.2, 22.32
+    993.2, 23
+    1033, 23.67
+    1073, 24.35
+    1113, 25.03
+    1153, 25.71
+    1193, 26.38
+    1233, 27.06
+    1273, 27.74
+    1313, 28.42
+    1353, 29.11
+    1393, 29.79
+    1473, 31.15
+Electrical conductivity [Siemens/m]:	834500
+Tangent modulus [Pa]:	1.130e+9
+True stress with strain [strain], [Pa]:	
+  Temperature [K]:	293.1
+    0, 7.116e+8
+    0.03333, 9.260e+8
+    0.06667, 1.050e+9
+    0.1, 1.119e+9
+    0.1333, 1.168e+9
+    0.1667, 1.202e+9
+    0.2, 1.223e+9
+    0.2333, 1.236e+9
+    0.2667, 1.246e+9
+    0.3, 1.255e+9
+-
+Only this first series will be imported:
+Fatigue S-N curve [cycles], [Pa]:	
+  Stress Ratio:	-1
+    1000, 9.114e+8
+    3162, 8.672e+8
+    10000, 8.261e+8
+    31620, 7.875e+8
+    100000, 7.509e+8
+    316200, 7.162e+8
+    1000000, 6.831e+8
+    3162000, 6.517e+8
+    10000000, 6.216e+8
+    31620000, 5.930e+8
+    1.000e+8, 5.657e+8
+-
+Delete any series above to import this one:
+Fatigue S-N curve [cycles], [Pa]:	
+  Stress Ratio:	0
+    1000, 4.445e+8
+    3162, 4.337e+8
+    10000, 4.232e+8
+    31620, 4.128e+8
+    100000, 4.025e+8
+    316200, 3.923e+8
+    1000000, 3.822e+8
+    3162000, 3.721e+8
+    10000000, 3.621e+8
+    31620000, 3.522e+8
+    1.000e+8, 3.424e+8
+-
+Delete any series above to import this one:
+Fatigue S-N curve [cycles], [Pa]:	
+  Stress Ratio:	0.5
+    1000, 2.197e+8
+    3162, 2.171e+8
+    10000, 2.144e+8
+    31620, 2.117e+8
+    100000, 2.089e+8
+    316200, 2.062e+8
+    1000000, 2.033e+8
+    3162000, 2.004e+8
+    10000000, 1.975e+8
+    31620000, 1.945e+8
+    1.000e+8, 1.915e+8
+Electrical resistivity [1/Siemens/m]:	1.198e-6
+

@@ -1,14 +1,12 @@
 %% Clear Workspace
-%% Last updated: 11/13/25 3:49 PM by Will
 clear; clc; close all;
-addpath(fullfile(fileparts(mfilename('fullpath')), 'Calls'));
 
 %% File Names
-vtkFile   = 'surf_000052186.vtk';
+vtkFile   = 'surf_000034193.vtk';
 inputFile = 'input (1).sdf';
-stlFile   = 'BackMeshTest_round.stl';
-csvPressureOut    = 'pressure_mach7_1.csv';
-csvHeatFluxOut    = 'heatflux_mach7_1.csv';
+stlFile   = 'Odd_seed_Point_101_round.stl';
+csvPressureOut    = 'pressure_mach5dot5.csv';
+csvHeatFluxOut    = 'heatflux_mach5dot5.csv';
 
 %% Load Flow Conditions
 [P_inf, T_inf, M_inf, rho_inf, pran, y, Rgas] = load_input(inputFile);
@@ -18,51 +16,52 @@ csvHeatFluxOut    = 'heatflux_mach7_1.csv';
 [T_e, P_e, U_e, V_e, W_e, centroids, norms, areas] = load_vtk_surf(vtkFile);
 
 %% Calculate Heat Flux
-T_w = zeros(size(T_e)) + 294;
-r = zeros(size(T_e));
-x = zeros(size(T_e));
-TsTe = zeros(size(T_e));
-v_mag = zeros(size(T_e));
-x = centroids(:, 1);
-v_mag = sqrt(U_e.^2+V_e.^2+W_e.^2);
-M_e = v_mag./sqrt(y*Rgas*T_e);
-T_aw = T_e.*(1+r*((y-1)/2).*M_e.^2); 		% adiabatic wall temperature
-T_t = T_inf*(1+(y-1)/2*M_inf);		% total stagnation temperature
-rho_e = rho_inf*((y+1)*M_inf^2/(y-1)*M_inf^2+2);
-squiggle_w = T_e/T_t;
-F_RA = zeros(size(squiggle_w));  % Preallocate
-% Case 1: squiggle_w < 0.2
-F_RA(squiggle_w < 0.2) = 1;
-% Case 2: 0.2 <= squiggle_w <= 0.65
-idx_mid = squiggle_w >= 0.2 & squiggle_w <= 0.65;
-F_RA(idx_mid) = 0.8311 + 0.9675 .* squiggle_w(idx_mid) - 0.6142 .* squiggle_w(idx_mid).^2;
-% Case 3: squiggle_w > 0.65
-F_RA(squiggle_w > 0.65) = 1.2;
-mu_e = 1.716*10^-5.*(T_e/273.1).^(3/2)*383.1./(T_e+110);
-Re = rho_e*v_mag.*x./mu_e;
-if Re > 4000 % if turbulent flow - gemini
-r = (Pr).^(1/3);
-TsTe = 0.5+0.039.*M_e.^2 + 0.5.*(T_w./T_e);
-musmue  = (TsTe).^(3/2).*(1+110./T_e)./(TsTe+110./T_e);
-OsOe = (musmue).^(1/5)./(TsTe).^(4/5);
-cfi = 0.0592./(Re).^(1/5);
-cfc = cfi.*OsOe;
-else % laminar flow
-r = sqrt(pran);
-TsTe = 0.5+0.039.*M_e.^2 + 0.5.*(T_w./T_e);
-musmue  = (TsTe).^(3/2).*(1+110./T_e)./(TsTe+110./T_e);
-OsOe = (musmue).^(1/2)./(TsTe).^(1/2);
-cfi = 0.664./(Re).^(1/2);
-cfc = cfi.*OsOe;
-end
-q_e = 0.5*rho_e.*v_mag.^2;
-Tau_w = cfc.*q_e;					% Wall shear stress
-Cp = y*Rgas/(y-1);
-q_w = Cp./v_mag.*(T_aw - T_w).*F_RA.*Tau_w;
-% Define invalid mask
-invalid_idx = (norms(:,1) == 1) | (T_e == 0);
-% Set invalid entries to 0 or NaN (your choice)
-q_w(invalid_idx) = 0;  % or NaN if you want to clearly flag them
+% Speeds and Mach
+v_mag      = sqrt(U_e.^2 + V_e.^2 + W_e.^2);
+v_mag_safe = max(v_mag, 1e-6);
+a_e        = sqrt(y*Rgas.*T_e);
+M_e        = v_mag_safe ./ a_e;
+
+% Local state and freestream total T
+rho_e = P_e ./ (Rgas .* T_e);
+T_t   = T_inf * (1 + (y-1)/2 * M_inf^2);
+
+% Viscosity and Re_x
+mu_e = 1.716e-5 .* (T_e/273.15).^(3/2) .* (383.15) ./ (T_e + 110.4);
+x_le = min(centroids(:,1));
+x    = max(centroids(:,1) - x_le, 1e-6);
+Re_x = rho_e .* v_mag_safe .* x ./ mu_e;
+
+% Laminar vs turbulent, recovery factor, T_aw
+isTurb = Re_x > 4e3;          % pick a better criterion if you have one
+r = zeros(size(Re_x));
+r(~isTurb) = sqrt(pran);
+r( isTurb) = pran.^(1/3);
+T_w  = 294 + zeros(size(T_e));
+T_aw = T_e .* (1 + r .* ((y-1)/2) .* M_e.^2);
+
+% Compressible Cf with transformation
+Cf_lam = 0.664 ./ sqrt(Re_x);
+Cf_tur = 0.0592 ./ (Re_x).^(1/5);
+TsTe   = 0.5 + 0.039.*M_e.^2 + 0.5.*(T_w./T_e);
+musmue = (TsTe).^(3/2) .* (1 + 110.4./T_e) ./ (TsTe + 110.4./T_e);
+OsOe_lam = (musmue).^(1/2) ./ (TsTe).^(1/2);
+OsOe_tur = (musmue).^(1/5) ./ (TsTe).^(4/5);
+Cf = zeros(size(Re_x));
+Cf(~isTurb) = Cf_lam(~isTurb) .* OsOe_lam(~isTurb);
+Cf( isTurb) = Cf_tur( isTurb) .* OsOe_tur( isTurb);
+
+% Wall shear and heat flux via Chilton–Colburn
+q_dyn     = 0.5 .* rho_e .* v_mag_safe.^2;
+Tau_w     = Cf .* q_dyn;
+Cp        = y*Rgas/(y-1);
+Pr_factor = pran.^(-2/3);
+q_w = Tau_w .* (Cp .* Pr_factor) .* (T_aw - T_w) ./ v_mag_safe;
+
+% Mask bad cells
+%invalid_idx = ~isfinite(q_w) | (areas < 1e-12);
+invalid_idx = (T_e <= 0) | ~isfinite(q_w);
+q_w(invalid_idx) = 0;
 
 %% Load Structural Mesh
 TR = stlread(stlFile);
@@ -137,8 +136,8 @@ fprintf('Mapped pressure range: [%.2f, %.2f]\n', min(mappedPressures), max(mappe
 
 %% Export to CSV for ANSYS
 FaceID = (1:size(stlCentroids,1))';
-csvPressureData = [FaceID, stlCentroids, mappedPressures];
-csvHeatFluxData = [FaceID, stlCentroids, mappedHeatFlux];
+csvPressureData = [FaceID, stlCentroids/1000, mappedPressures];
+csvHeatFluxData = [FaceID, stlCentroids/1000, mappedHeatFlux];
 
 % Export pressure values to csv
 headers = {'FaceID','X','Y','Z','Pressure'};
@@ -148,9 +147,9 @@ writematrix(csvPressureData, csvPressureOut, 'WriteMode','append');
 fprintf('Export complete. Data saved to %s\n', csvPressureOut);
 
 % Export heat flux values to csv
-headers = {'FaceID','X','Y','Z','Heat Flux'};
+headers = {'Heat Flux','FaceID'};
 writecell(headers, csvHeatFluxOut);
-writematrix(csvHeatFluxData, csvHeatFluxOut, 'WriteMode','append');
+writematrix(csvHeatFluxData(:,[5,1]), csvHeatFluxOut, 'WriteMode','append');
 
 fprintf('Export complete. Data saved to %s\n', csvHeatFluxOut);
 
@@ -164,6 +163,7 @@ axis equal; colorbar;
 xlabel('X'); ylabel('Y'); zlabel('Z');
 title('Pressure Field on Mesh');
 
+
 % Convective Heat Flux Plotting
 figure;
 trisurf(stlFaces, stlVertices(:,1), stlVertices(:,2), stlVertices(:,3), ...
@@ -173,5 +173,5 @@ axis equal; colorbar;
 xlabel('X'); ylabel('Y'); zlabel('Z');
 title('Convective Heat Flux Field on Mesh');
 % Set scale
-clim(prctile(mappedHeatFlux, [5 95]));
+clim(prctile(mappedHeatFlux, [1 99]));
 colormap(turbo)

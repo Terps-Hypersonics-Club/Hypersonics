@@ -63,6 +63,7 @@ end
 function [T_history,dx] = run_1d_solver(inputfile,altitudefile,radius,layer,Nxtot,mode,heat_mode)
 warning('off','all');
 % Access Material Properties
+data = accessMat(inputfile{1});
 materials = cell(length(inputfile),1);
 alphas = zeros(length(inputfile),1);
 for j = 1:length(inputfile)
@@ -84,10 +85,11 @@ for i = 1:length(layer)
     dxs(i) = layer(i)/(Nx(i)-1);    % Spatial Steps
 end
 time = altitude(end,1); % Time [s]
-Fo = 0.4;         % Fourier Number
-dt = min(dxs)^2*Fo/max(alphas);
-Nt = ceil(time/dt); % # of Time Partitions
+%Fo = 0.4;         % Fourier Number
+dt = 0.001;
 dx = dxs(1);
+Fo = alpha*dt/dx^2; % Time Steps
+Nt = ceil(time/dt); % # of Time Partitions
 
 % Parameters
 T_inf = altitude(1,7);        % Initial Ambient Temperature [K]
@@ -96,7 +98,7 @@ T_new = T;                    % Updated Temperature Profile (Initially the same 
 T_history = zeros(Nxtot,Nt);     % Temperature profile across all time
 T_history(:,1) = T;           % Initially set the first column to the ITP
 Pr = 0.72;                    % Prandtl Number
-r = (Pr)^(1/3);                        % Recovery Factor
+r = 1;%(Pr)^(1/3);                        % Recovery Factor
 RgasAir = 296.8;              % Gas specific constant [J/kg-K]
 ems = 0.9;
 p_inf = altitude(1,4);        % Freestream Pressure [Pa]
@@ -135,37 +137,26 @@ for p = 1:Nt
     qconv = Fra*tau_w*polyval(cpfit,T(1))*(Taw-T(1))/ue;
     end
     if heat_mode == "nose"
-    qconv = 0.753*Pr^(-0.6)*(rhoe*mue)^0.5*(h_aw-h_w)*sqrt(dudx)*(cosd(0))^2;
+    qconv = 0.763*Pr^(-0.6)*(rhoe*mue)^0.5*(h_aw-h_w)*sqrt(dudx)*(cosd(0))^2;
     end
     qcond = (T(2)-T(1));
     qrad = sig*ems*(T(1))^4;
     qddot = qconv-qrad;
     % Update the Edge Node
-    data = materials{1};
-    alpha = alphas(1);
-    dx = dxs(1);
     T_new(1) = dt/(dx*data.Density_kg_m_3_*data.SpecificHeatCapacity_J_kg__C_)*qddot + (alpha*dt/dx^2)*qcond + T(1);
     for i = 2:Nxtot-1
-        for j = 1:length(Nx)-1
-          if i>(sum(Nx)-Nx(j+1))
+        T_new(i) = (alpha*dt/dx^2)*(T(i+1)+T(i-1)) + (1-2*(alpha*dt/dx^2))*T(i);
+        % if i >= Nx(2)
+        %     data = materials{2};
+        %     alpha = alphas(2);
+        %     dx = dxs(2);
+        % end
+        for j = 2:length(Nx)
+            if i>=Nx(j)
                 data = materials{j};
                 alpha = alphas(j);
                 dx = dxs(j);
-                T_new(i) = (alpha*dt/dx^2)*(T(i+1)+T(i-1)) + (1-2*(alpha*dt/dx^2))*T(i);
-          elseif i==(sum(Nx)-Nx(j+1))
-                c = data.SpecificHeatCapacity_J_kg__C_;
-                rho = data.Density_kg_m_3_;
-                data1 = materials{j+1};
-                data2 = materials{j};
-                kp12 = data1.ThermalConductivity_W_m__C_;
-                km12 = data2.ThermalConductivity_W_m__C_;
-                dudxp12 = (T(i+1) - T(i))/dxs(j+1);
-                dudxm12 = (T(i) - T(i-1))/dxs(j);
-                dkdudxdx = (kp12*dudxp12 - km12*dudxm12)/((dxs(j+1)+dxs(j))/2);
-                T_new(i) = T(i) + dt/(rho*c)*dkdudxdx;
-          else
-              T_new(i) = (alpha*dt/dx^2)*(T(i+1)+T(i-1)) + (1-2*(alpha*dt/dx^2))*T(i);
-          end
+            end
         end
     end
     % Update conductive end BC
@@ -184,7 +175,9 @@ data = materials{1};
 % Plot Temperature vs Time
 if mode == "3D"
 	[x,t] = meshgrid(linspace(0,sum(layer),Nxtot),linspace(0,time,Nt));
+    %pcolor(x,t,T_history')
 	surf(x,t,T_history'); hold on
+	colormap turbo;
     if heat_mode == "nose"
         surf(x, t, data.MaximumServiceTemperature_K_*ones(size(x)), 'FaceAlpha', 0.7, 'EdgeColor', 'black', 'FaceColor', 'cyan');
         subtitle(sprintf('Max Service Temperature [K]: %.2f', data.MaximumServiceTemperature_K_));
@@ -197,75 +190,26 @@ if mode == "3D"
 	zlabel('Temperature [K]');
     zlim([0 4000]);
 	title(sprintf('Material: %s', data.RecordName));
-    colormap(turbo(256));
 	colorbar('eastoutside');
 	shading interp;
 elseif mode == "2D"
-    [x,t] = meshgrid(linspace(0,sum(layer),Nxtot),linspace(0,time,Nt));
-    pcolor(x,t,T_history')
-    colormap(turbo(256));
-    colorbar('eastoutside');
-	shading interp;
-    xlabel('Position [m]','FontSize',1);
-	ylabel('Time [s]','FontSize',1);
-    if heat_mode == "nose"
-        title('Forebody Thermal Simulation','FontSize',1)
-    elseif heat_mode == "surface"
-        title('Surface Thermal Simulation','FontSize',1)
-    end
-    cb = gca;
-    cb.FontSize = 14;
-	% x = linspace(0,L,Nxtot);
-    % t = linspace(0,time,Nt);
-	% plot(t,T_history(end,:))
-	% xlabel('Time [s]')
-	% ylabel('Temperature [K]')
-	% title('1D Transient Heat Transfer');
-    % hold on
+	x = linspace(0,L,Nxtot);
+    t = linspace(0,time,Nt);
+	plot(t,T_history(end,:))
+	xlabel('Time [s]')
+	ylabel('Temperature [K]')
+	title('1D Transient Heat Transfer');
+    hold on
 end
 figure;
-tiledlayout(2,3);
-
-% Plot Heat Flux vs Time
-nexttile;
+% tiledlayout(2,3);
+% 
+% % Plot Heat Flux vs Time
+% nexttile;
 t1 = linspace(0,time,Nt);
 plot(t1,qddot1)
 xlabel('Time [s]')
 ylabel('Heat Flux [W/m^2]')
 title('Heat Flux over Time')
 xlim([-10,time])
-
-% Plot Gamma vs Time
-nexttile;
-y = linspace(1.397,1.402,100);
-plot(t1,gamma1,'r-','LineWidth',2); hold on
-title('Gamma over Time')
-
-% % Create patch coordinates
-% x_patch = [min(t1), max(t1), max(t1), min(t1)];
-% y_patch = [min(y), min(y), max(y), max(y)];
-% 
-% % Add translucent horizontal band
-% patch(x_patch, y_patch, 'yellow', 'FaceAlpha', 0.3, 'EdgeColor', 'none');
-% xlabel('Time [s]')
-% ylabel('Gamma')
-% ylim([1.39 1.41])
-
-% Plot Altitude vs Time
-nexttile;
-plot(altitude(:,1),altitude(:,2),'b-');
-xlabel('Time [s]')
-ylabel('Altitude [m]')
-title('Altitude over Time')
-
-% Plot Mach Number vs Time
-nexttile;
-plot(altitude(:,1),altitude(:,3),'r-','LineWidth',2);
-xlabel('Time [s]')
-ylabel('Mach Number')
-title('Mach Number over Time')
-end
-
-%% Function Call
-clear;
-T_history1 = run_1d_solver({'ZrO2.txt','tungsten.txt','inconel718.txt'},'Trajectory_test_aero_grids_dense.csv',0.003,[0.0005 0.03 0.02],200,"2D","nose");
+T_history1 = run_1d_solver({'HfO2.txt','304L.txt','inconel718.txt','silica.txt','inconel718.txt'},'thermal_trajectory_data.csv',0.003,[0.0005 0.003 0.003 0.006 0.003],50,"3D","surface");

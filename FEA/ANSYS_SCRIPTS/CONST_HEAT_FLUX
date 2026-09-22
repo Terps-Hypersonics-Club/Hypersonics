@@ -1,0 +1,13 @@
+! --- Pre-solve Commands (APDL) ---
+ALLSEL,ALL
+! --- Apply constant heat flux ---
+*SET, comp_elems, 'SURFACE_ELEMENTS'   ! name of surface Named Selection
+cm,   selElems, %comp_elems%
+esel, s, comp, , selElems
+
+! Time-varying heat flux: 2000 W/m^2 until t=5 s, then 1000 W/m^2 until t=10 s
+
+SFEDELE,ALL,,HFLUX
+SFE,ALL,,HFLUX,,2000                 ! apply the time-dependent flux
+
+ALLSEL,ALL

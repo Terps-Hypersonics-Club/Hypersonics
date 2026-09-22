@@ -1,0 +1,26 @@
+
+Record name:	Carbon fiber reinforced carbon matrix composite (Vf:50%)
+Record origin:	In-house data
+Data source:	Exported from Granta EduPack 2022 R2
+Table: MaterialUniverse
+Record: Carbon fiber reinforced carbon matrix composite (Vf:50%)
+Tensile modulus [Pa]:	9.487e+10
+Tensile strength, yield [Pa]:	5.034e+8
+Tensile strength, ultimate [Pa]:	5.034e+8
+Thermal conductivity [W/m.°C]:	26.27
+Electrical resistivity [ohm.m]:	1.697e-5
+Thermal expansion coefficient [strain/°C]:	2.218e-6
+Maximum service temperature [K]:	2325
+UNS number:	
+Equivalents:	
+Specific heat capacity [J/kg.°C]:	756
+Tensile elongation [strain]:	1.732e-4
+Designation:	Carbon matrix, carbon fiber reinforced (Vf:50%), composite (Excel C AC-250-B10-2000)
+Density [kg/m^3]:	1700
+Composition:	Carbon fiber reinforced carbon matrix composite (Vf:50%)
+Poisson's ratio:	0.3198
+Base material:	C (Carbon)
+Condition:	
+Electrical conductivity [Siemens/m]:	58920
+Electrical resistivity [1/Siemens/m]:	1.697e-5
+

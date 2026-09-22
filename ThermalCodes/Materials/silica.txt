@@ -1,0 +1,29 @@
+
+Record name:	Silica (96%)
+Record origin:	In-house data
+Data source:	Exported from Granta EduPack 2022 R2
+Table: MaterialUniverse
+Record: Silica (96%)
+Tensile modulus [Pa]:	6.798e+10
+Tensile strength, yield [Pa]:	1.593e+8
+Tensile strength, ultimate [Pa]:	1.593e+8
+Thermal conductivity [W/m.°C]:	1.225
+Electrical resistivity [ohm.m]:	1.000e+16
+Dielectric constant:	3.747
+Dielectric loss tangent:	0.001285
+Thermal expansion coefficient [strain/°C]:	7.448e-7
+Maximum service temperature [K]:	1315
+UNS number:	
+Glass transition temperature [K]:	1753
+Equivalents:	
+Specific heat capacity [J/kg.°C]:	724.6
+Tensile elongation [strain]:	0.002345
+Designation:	Silica glass (Corning 7913)
+Density [kg/m^3]:	2175
+Composition:	96.5% SiO2/.5% Al2O3/3% B2O3
+Poisson's ratio:	0.1849
+Base material:	Oxide
+Condition:	
+Electrical conductivity [Siemens/m]:	9.976e-17
+Electrical resistivity [1/Siemens/m]:	1.002e+16
+

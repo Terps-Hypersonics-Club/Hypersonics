@@ -28,7 +28,6 @@ v_mag = zeros(size(T_e));
 x = centroids(:, 1);
 v_mag = sqrt(U_e.^2+V_e.^2+W_e.^2);
 M_e = v_mag./sqrt(y*Rgas*T_e);
-T_aw = T_e.*(1+r*((y-1)/2).*M_e.^2); 		% adiabatic wall temperature
 T_t = T_inf*(1+(y-1)/2*M_inf);		% total stagnation temperature
 rho_e = rho_inf*((y+1)*M_inf^2/(y-1)*M_inf^2+2);
 squiggle_w = T_e/T_t;
@@ -43,7 +42,7 @@ F_RA(squiggle_w > 0.65) = 1.2;
 mu_e = 1.716*10^-5.*(T_e/273.1).^(3/2)*383.1./(T_e+110);
 Re = rho_e*v_mag.*x./mu_e;
 if Re > 4000 % if turbulent flow - gemini
-r = (Pr).^(1/3);
+r = (pran).^(1/3);
 TsTe = 0.5+0.039.*M_e.^2 + 0.5.*(T_w./T_e);
 musmue  = (TsTe).^(3/2).*(1+110./T_e)./(TsTe+110./T_e);
 OsOe = (musmue).^(1/5)./(TsTe).^(4/5);
@@ -57,6 +56,8 @@ OsOe = (musmue).^(1/2)./(TsTe).^(1/2);
 cfi = 0.664./(Re).^(1/2);
 cfc = cfi.*OsOe;
 end
+% Adiabatic wall temperature, computed AFTER r is set by the laminar/turbulent branch
+T_aw = T_e.*(1 + r.*((y-1)/2).*M_e.^2);
 q_e = 0.5*rho_e.*v_mag.^2;
 Tau_w = cfc.*q_e;					% Wall shear stress
 Cp = y*Rgas/(y-1);

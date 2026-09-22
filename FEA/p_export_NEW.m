@@ -8,8 +8,10 @@ here      = fileparts(mfilename('fullpath'));
 vtkFile   = fullfile(here, 'Calls', 'surf_000034193.vtk');
 inputFile = fullfile(here, 'Calls', 'input (1).sdf');
 stlFile   = fullfile(here, 'Old',   'Odd_seed_Point_101_round.stl');
-csvPressureOut    = 'pressure_mach7_1.csv';
-csvHeatFluxOut    = 'heatflux_mach7_1.csv';
+outDir    = fullfile(here, 'Exports');
+if ~exist(outDir, 'dir'), mkdir(outDir); end
+csvPressureOut    = fullfile(outDir, 'pressure_mach5dot5_new.csv');
+csvHeatFluxOut    = fullfile(outDir, 'heatflux_mach5dot5_new.csv');
 
 %% Load Flow Conditions
 [P_inf, T_inf, M_inf, rho_inf, pran, y, Rgas] = load_input(inputFile);

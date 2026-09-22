@@ -136,6 +136,19 @@ mappedHeatFlux = q_w(idx);
 fprintf('Unique CFD centroids: %d\n', length(unique(round(centroids,6),'rows')));
 fprintf('Unique STL centroids: %d\n', length(unique(round(stlCentroidsAligned,6),'rows')));
 fprintf('Mapped pressure range: [%.2f, %.2f]\n', min(mappedPressures), max(mappedPressures));
+fprintf('Mapped heat flux range: [%.4g, %.4g]\n', min(mappedHeatFlux), max(mappedHeatFlux));
+
+% Mask / NaN / zero accounting
+nCFD = numel(q_w);  nSTL = numel(mappedHeatFlux);
+fprintf('\n--- Mask accounting ---\n');
+fprintf('CFD cells masked (norm x==1 or T_e==0): %d of %d (%.1f%%)\n', nnz(invalid_idx), nCFD, 100*nnz(invalid_idx)/nCFD);
+fprintf('CFD cells with q_w NaN:                %d of %d (%.1f%%)\n', nnz(isnan(q_w)), nCFD, 100*nnz(isnan(q_w))/nCFD);
+fprintf('STL faces mapped to NaN heat flux:     %d of %d (%.1f%%)\n', nnz(isnan(mappedHeatFlux)), nSTL, 100*nnz(isnan(mappedHeatFlux))/nSTL);
+fprintf('STL faces with exactly zero heat flux: %d of %d\n', nnz(mappedHeatFlux == 0), nSTL);
+fprintf('STL faces with negative heat flux:     %d of %d (%.1f%%)\n', nnz(mappedHeatFlux < 0), nSTL, 100*nnz(mappedHeatFlux < 0)/nSTL);
+fprintf('STL faces with NaN pressure:           %d of %d\n', nnz(isnan(mappedPressures)), nSTL);
+fprintf('STL faces with exactly zero pressure:  %d of %d\n', nnz(mappedPressures == 0), nSTL);
+fprintf('-----------------------\n\n');
 
 %% Export to CSV for ANSYS
 FaceID = (1:size(stlCentroids,1))';
@@ -174,9 +187,17 @@ figure;
 trisurf(stlFaces, stlVertices(:,1), stlVertices(:,2), stlVertices(:,3), ...
         'FaceVertexCData', mappedHeatFlux,'FaceColor','flat','EdgeColor','none');
 axis equal; colorbar;
+hold on;
+% Masked faces (NaN heat flux) drawn in pink so they are easy to spot
+maskFaces = isnan(mappedHeatFlux);
+if any(maskFaces)
+    trisurf(stlFaces(maskFaces,:), stlVertices(:,1), stlVertices(:,2), stlVertices(:,3), ...
+            'FaceColor', [1 0.3 0.8], 'EdgeColor', 'none');
+end
+hold off;
 
 xlabel('X'); ylabel('Y'); zlabel('Z');
-title('Convective Heat Flux Field on Mesh');
+title(sprintf('Convective Heat Flux Field on Mesh  (pink = masked, %d faces)', nnz(maskFaces)));
 % Set scale
 clim(prctile(mappedHeatFlux, [5 95]));
 colormap(turbo)

@@ -1,14 +1,13 @@
 %% Clear Workspace
-%% Last updated: 11/13/25 3:49 PM by Will
 clear; clc; close all;
 addpath(fullfile(fileparts(mfilename('fullpath')), 'Calls'));
 
 %% File Names
-vtkFile   = 'surf_000052186.vtk';
+vtkFile   = 'surf_000034193.vtk';
 inputFile = 'input (1).sdf';
-stlFile   = 'BackMeshTest_round.stl';
-csvPressureOut    = 'pressure_mach7_1.csv';
-csvHeatFluxOut    = 'heatflux_mach7_1.csv';
+stlFile   = 'Odd_seed_Point_101_round.stl';
+csvPressureOut    = 'pressure_mach5dot5.csv';
+csvHeatFluxOut    = 'heatflux_mach5dot5.csv';
 
 %% Load Flow Conditions
 [P_inf, T_inf, M_inf, rho_inf, pran, y, Rgas] = load_input(inputFile);
@@ -58,7 +57,7 @@ end
 q_e = 0.5*rho_e.*v_mag.^2;
 Tau_w = cfc.*q_e;					% Wall shear stress
 Cp = y*Rgas/(y-1);
-q_w = Cp./v_mag.*(T_aw - T_w).*F_RA.*Tau_w;
+q_w = -Cp./v_mag.*(T_aw - T_w).*F_RA.*Tau_w;
 % Define invalid mask
 invalid_idx = (norms(:,1) == 1) | (T_e == 0);
 % Set invalid entries to 0 or NaN (your choice)
@@ -137,8 +136,8 @@ fprintf('Mapped pressure range: [%.2f, %.2f]\n', min(mappedPressures), max(mappe
 
 %% Export to CSV for ANSYS
 FaceID = (1:size(stlCentroids,1))';
-csvPressureData = [FaceID, stlCentroids, mappedPressures];
-csvHeatFluxData = [FaceID, stlCentroids, mappedHeatFlux];
+csvPressureData = [FaceID, stlCentroids/1000, mappedPressures];
+csvHeatFluxData = [FaceID, stlCentroids/1000, mappedHeatFlux];
 
 % Export pressure values to csv
 headers = {'FaceID','X','Y','Z','Pressure'};
@@ -163,6 +162,7 @@ trisurf(stlFaces, stlVertices(:,1), stlVertices(:,2), stlVertices(:,3), ...
 axis equal; colorbar;
 xlabel('X'); ylabel('Y'); zlabel('Z');
 title('Pressure Field on Mesh');
+
 
 % Convective Heat Flux Plotting
 figure;

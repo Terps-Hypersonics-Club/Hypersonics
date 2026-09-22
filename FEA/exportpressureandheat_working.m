@@ -25,11 +25,15 @@ r = zeros(size(T_e));
 x = zeros(size(T_e));
 TsTe = zeros(size(T_e));
 v_mag = zeros(size(T_e));
-x = centroids(:, 1);
+% Running length for Re: distance from the leading edge ALONG THE FLOW.
+% The SDF puts freestream along +z (winf = umag*cos(aoa)), so use z, not the
+% spanwise x coordinate (x is symmetric about 0 and would give Re <= 0).
+x_run_min = 1e-4;                                   % [m] floor so Re never hits 0 at the leading edge
+x = max(centroids(:,3) - min(centroids(:,3)), x_run_min);
 v_mag = sqrt(U_e.^2+V_e.^2+W_e.^2);
 M_e = v_mag./sqrt(y*Rgas*T_e);
 T_t = T_inf*(1+(y-1)/2*M_inf);		% total stagnation temperature
-rho_e = rho_inf*((y+1)*M_inf^2/(y-1)*M_inf^2+2);
+rho_e = rho_inf*((y+1)*M_inf^2)/((y-1)*M_inf^2+2);   % normal-shock density ratio (parenthesised)
 squiggle_w = T_e/T_t;
 F_RA = zeros(size(squiggle_w));  % Preallocate
 % Case 1: squiggle_w < 0.2
@@ -62,6 +66,26 @@ q_e = 0.5*rho_e.*v_mag.^2;
 Tau_w = cfc.*q_e;					% Wall shear stress
 Cp = y*Rgas/(y-1);
 q_w = Cp./v_mag.*(T_aw - T_w).*F_RA.*Tau_w;
+
+%% Physics sanity checks (printed to command window)
+fprintf('\n--- Physics sanity ---\n');
+fprintf('Flow direction check: mean W_e = %+.1f m/s (expect > 0 for +z flow), mean U_e = %+.1f, mean V_e = %+.1f\n', mean(W_e), mean(U_e), mean(V_e));
+fprintf('Running length x:     [%.4g, %.4g] m\n', min(x), max(x));
+fprintf('rho_inf = %.4g kg/m^3, rho_e = %.4g kg/m^3 (ratio %.2f; expect ~%.2f at M=%.2f)\n', rho_inf, rho_e, rho_e/rho_inf, ((y+1)*M_inf^2)/((y-1)*M_inf^2+2), M_inf);
+fprintf('T_e:   [%.1f, %.1f] K   (T_inf = %.1f K)\n', min(T_e), max(T_e), T_inf);
+fprintf('M_e:   [%.2f, %.2f]     (M_inf = %.2f)\n', min(M_e), max(M_e), M_inf);
+fprintf('T_aw:  [%.1f, %.1f] K,  faces with T_aw < T_w: %d of %d\n', min(T_aw), max(T_aw), nnz(T_aw < T_w), numel(T_aw));
+fprintf('Re:    [%.3g, %.3g],  Re <= 0: %d,  Re > 4000 (turbulent): %d of %d (%.1f%%)\n', min(Re), max(Re), nnz(Re <= 0), nnz(Re > 4000), numel(Re), 100*nnz(Re > 4000)/numel(Re));
+fprintf('cf:    [%.3g, %.3g]   (>~0.01 is unphysical)\n', min(cfc), max(cfc));
+fprintf('Tau_w: [%.3g, %.3g] Pa\n', min(Tau_w), max(Tau_w));
+fprintf('q_w is real-valued: %d   (0 means complex values leaked in)\n', isreal(q_w));
+fprintf('q_w:   [%.4g, %.4g] W/m^2,  negative: %d of %d\n', min(real(q_w)), max(real(q_w)), nnz(real(q_w) < 0), numel(q_w));
+V_inf = M_inf*sqrt(y*Rgas*T_inf);
+for Rn = [0.005 0.02]
+    fprintf('Sutton-Graves stagnation estimate, R_n = %.0f mm: %.3g W/m^2 (upper bound for whole body)\n', ...
+        Rn*1000, 1.83e-4*sqrt(rho_inf/Rn)*V_inf^3);
+end
+fprintf('----------------------\n');
 % Define invalid mask
 invalid_idx = (norms(:,1) == 1) | (T_e == 0);
 % Set invalid entries to 0 or NaN (your choice)

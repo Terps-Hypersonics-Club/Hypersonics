@@ -3,10 +3,11 @@
 clear; clc; close all;
 addpath(fullfile(fileparts(mfilename('fullpath')), 'Calls'));
 
-%% File Names
-vtkFile   = 'surf_000052186.vtk';
-inputFile = 'input (1).sdf';
-stlFile   = 'BackMeshTest_round.stl';
+%% File Names (resolved relative to this script's folder)
+here      = fileparts(mfilename('fullpath'));
+vtkFile   = fullfile(here, 'Calls', 'surf_000034193.vtk');
+inputFile = fullfile(here, 'Calls', 'input (1).sdf');
+stlFile   = fullfile(here, 'Old',   'Odd_seed_Point_101_round.stl');
 csvPressureOut    = 'pressure_mach7_1.csv';
 csvHeatFluxOut    = 'heatflux_mach7_1.csv';
 

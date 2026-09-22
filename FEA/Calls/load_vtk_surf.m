@@ -1,102 +1,91 @@
-function [T, P, U, V, W, centroids, norms, areas] = load_vtk_surf(vtkFile)
+function [T, P, U, V, W, centroids, norms, areas, extra] = load_vtk_surf(vtkFile)
 % Loads an ASCII VTK POLYDATA surface file into MATLAB arrays.
 % Each row is a triangle with geometry and all cell data fields.
+%
+% Cell-data SCALARS blocks are read BY NAME, in whatever order they appear
+% in the file, so the loader does not depend on field ordering.
+%
+% Outputs:
+%   T, P, U, V, W  - cell temperature, pressure, velocity components
+%   centroids      - [num_tri x 3] triangle centroids
+%   norms          - [num_tri x 3] unit normals
+%   areas          - [num_tri x 1] triangle areas
+%   extra          - struct with EVERY cell-data field found (e.g. patch_id,
+%                    tau, qw), keyed by field name
 
 fid = fopen(vtkFile,'r');
-assert(fid>0, 'Cannot open file.');
+assert(fid > 0, 'Cannot open file: %s', vtkFile);
+cleanup = onCleanup(@() fclose(fid));
+
 %% --- Skip header lines until POINTS section
 line = fgetl(fid);
-while ischar(line)
-    if contains(line, 'POINTS')
-        break;
-    end
+while ischar(line) && ~startsWith(strtrim(line), 'POINTS')
     line = fgetl(fid);
 end
-
-%% --- Read points
+assert(ischar(line), 'POINTS section not found in %s', vtkFile);
 tokens = split(strtrim(line));
-points = str2double(tokens(2));
+npts   = str2double(tokens{2});
 
-pointarr = zeros(points,3);
-for i = 1:points
+%% --- Read points (3 values per point, whitespace separated)
+pointarr = fscanf(fid, '%f', [3, npts])';
+assert(size(pointarr,1) == npts, 'Expected %d points, read %d', npts, size(pointarr,1));
+
+%% --- Skip until POLYGONS section
+line = fgetl(fid);
+while ischar(line) && ~startsWith(strtrim(line), 'POLYGONS')
     line = fgetl(fid);
-    pointarr(i,:) = str2double(split(strtrim(line)));
 end
+assert(ischar(line), 'POLYGONS section not found in %s', vtkFile);
+tokens  = split(strtrim(line));
+num_tri = str2double(tokens{2});
 
-%% --- Skip header lines until POLYGONS section
+%% --- Read POLYGONS (each line: 3 i j k, zero-based indices)
+poly = fscanf(fid, '%d', [4, num_tri])';
+assert(size(poly,1) == num_tri, 'Expected %d polygons, read %d', num_tri, size(poly,1));
+assert(all(poly(:,1) == 3), 'Non-triangular polygons found; loader expects triangles');
+idx = poly(:,2:4) + 1;
+
+v1 = pointarr(idx(:,1),:);
+v2 = pointarr(idx(:,2),:);
+v3 = pointarr(idx(:,3),:);
+trinorm   = cross(v2 - v1, v3 - v2, 2);
+nmag      = sqrt(sum(trinorm.^2, 2));
+areas     = 0.5 * nmag;
+centroids = (v1 + v2 + v3) / 3;
+norms     = trinorm ./ (nmag + eps);
+
+%% --- Read every cell-data SCALARS block by name
+extra = struct();
 line = fgetl(fid);
 while ischar(line)
-    if contains(line, 'POLYGONS')
-        break;
+    s = strtrim(line);
+    if startsWith(s, 'SCALARS')
+        tok   = split(s);
+        fname = tok{2};
+        ncomp = 1;
+        if numel(tok) >= 4
+            ncomp = str2double(tok{4});
+        end
+        % Next line is LOOKUP_TABLE <name>
+        lt = fgetl(fid);
+        assert(ischar(lt) && startsWith(strtrim(lt), 'LOOKUP_TABLE'), ...
+            'Expected LOOKUP_TABLE after SCALARS %s', fname);
+        vals = fscanf(fid, '%f', [ncomp, num_tri])';
+        assert(size(vals,1) == num_tri, ...
+            'Field %s: expected %d values, read %d', fname, num_tri, size(vals,1));
+        extra.(matlab.lang.makeValidName(fname)) = vals;
     end
     line = fgetl(fid);
 end
 
-%% --- Read POLYGONS
-tokens   = split(strtrim(line));
-num_tri  = str2double(tokens(2));
-
-% Table declarations
-norms     = zeros(num_tri, 3);
-areas     = zeros(num_tri, 1);
-P         = zeros(num_tri, 1);
-T         = zeros(num_tri, 1);
-U         = zeros(num_tri, 1);
-V         = zeros(num_tri, 1);
-W         = zeros(num_tri, 1);
-centroids = zeros(num_tri, 3);
-
-for i = 1:num_tri
-    line   = fgetl(fid);
-    tokens = str2double(split(strtrim(line)));
-    v1     = pointarr(tokens(2)+1,:);
-    v2     = pointarr(tokens(3)+1,:);
-    v3     = pointarr(tokens(4)+1,:);
-    trinorm      = cross(v2-v1, v3-v2);
-    areas(i)     = 0.5*norm(trinorm);
-    centroids(i,:) = (v1+v2+v3)/3;
-    norms(i,:)   = trinorm / norm(trinorm + eps);
+%% --- Map named fields to the legacy outputs
+req = {'T','P','U','V','W'};
+for k = 1:numel(req)
+    assert(isfield(extra, req{k}), 'Required cell-data field "%s" not found in %s', req{k}, vtkFile);
 end
-
-%% Helper: function to skip until keyword
-    function skipTo(keyword)
-        l = fgetl(fid);
-        while ischar(l)
-            if contains(l, keyword)
-                break;
-            end
-            l = fgetl(fid);
-        end
-    end
-
-%% --- Pressures
-skipTo('SCALARS P');
-fgetl(fid); % skip one line after header
-for i = 1:num_tri
-    P(i) = str2double(fgetl(fid));
-end
-%% --- Temperatures
-fgetl(fid);
-for i = 1:num_tri
-    T(i) = str2double(fgetl(fid));
-end
-%% --- U velocities
-fgetl(fid);
-for i = 1:num_tri
-    U(i) = str2double(fgetl(fid));
-end
-
-%% --- V velocities
-fgetl(fid);
-for i = 1:num_tri
-    V(i) = str2double(fgetl(fid));
-end
-
-%% --- W velocities
-fgetl(fid);
-for i = 1:num_tri
-    W(i) = str2double(fgetl(fid));
-end
-
-fclose(fid);
+T = extra.T;
+P = extra.P;
+U = extra.U;
+V = extra.V;
+W = extra.W;
 end

@@ -16,3 +16,7 @@ codegen/
 *.mat
 .DS_Store
 "*.prj"          
+
+# Python bytecode
+__pycache__/
+*.pyc

@@ -119,6 +119,7 @@ pos = 1;
         end
         assert(dataStart + n*nb - 1 <= numel(raw), 'Unexpected end of file in %s', vtkFile);
         vals = double(swapbytes(typecast(raw(dataStart:dataStart+n*nb-1), cls)));
+        vals = vals(:);                 % column, to match the ASCII path
         pos = dataStart + n*nb;
     end
 

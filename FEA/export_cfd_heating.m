@@ -18,7 +18,7 @@ here = fileparts(mfilename('fullpath'));
 addpath(fullfile(here, 'Calls'));
 
 %% ---------------- User inputs ----------------
-vtkFile   = 'C:\Users\kkdar\Downloads\surf_out_000000001 (1).vtk';
+vtkFile   = fullfile(here, 'Calls', 'surf_out_000000001 (1).vtk');
 stlFile   = fullfile(here, 'WAV_RID.stl');   % from WAV_RID_STEP.step via Calls/step2stl.py; '' -> export at CFD cell centroids
 stlUnits  = 'mm';          % units of the STL file: 'mm' or 'm'  (CFD is assumed to be in m)
 caseName  = 'mach8_sealevel';
@@ -209,14 +209,17 @@ XYZ = stlCentroids;                              % metres
 csvP = fullfile(outDir, [caseName '_pressure.csv']);
 csvC = fullfile(outDir, [caseName '_convection.csv']);
 csvQ = fullfile(outDir, [caseName '_heatflux_cfd.csv']);
-Hcsv = mappedH;  Hcsv(isnan(Hcsv)) = 0;           % ANSYS tables cannot take NaN; h = 0 -> no heating
-mappedTaw(isnan(mappedTaw)) = 0;  mappedQ(isnan(mappedQ)) = 0;
+% ANSYS tables cannot take NaN; h = 0 -> no heating. Zero copies only, so the
+% plots below still show masked faces as NaN (pink) instead of 0.
+Hcsv = mappedH;      Hcsv(isnan(Hcsv)) = 0;
+TawCsv = mappedTaw;  TawCsv(isnan(TawCsv)) = 0;
+Qcsv = mappedQ;      Qcsv(isnan(Qcsv)) = 0;
 writecell({'FaceID','X','Y','Z','Pressure'}, csvP);
 writematrix([FaceID, XYZ, mappedP], csvP, 'WriteMode','append');
 writecell({'FaceID','X','Y','Z','h','T_aw'}, csvC);
-writematrix([FaceID, XYZ, Hcsv, mappedTaw], csvC, 'WriteMode','append');
+writematrix([FaceID, XYZ, Hcsv, TawCsv], csvC, 'WriteMode','append');
 writecell({'FaceID','X','Y','Z','qw_cfd','T_wall_cfd'}, csvQ);
-writematrix([FaceID, XYZ, mappedQ, mappedTw], csvQ, 'WriteMode','append');
+writematrix([FaceID, XYZ, Qcsv, mappedTw], csvQ, 'WriteMode','append');
 fprintf('\nWrote:\n  %s\n  %s\n  %s\n', csvP, csvC, csvQ);
 fprintf('ANSYS: apply %s as a CONVECTION load (film coefficient h, bulk temperature T_aw), not HFLUX.\n', [caseName '_convection.csv']);
 

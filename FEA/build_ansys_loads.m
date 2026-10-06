@@ -28,21 +28,23 @@
 clear; clc; close all;
 here = fileparts(mfilename('fullpath'));
 addpath(fullfile(here, 'Calls'));
+addpath(fullfile(here, 'WAV_RID_9'));
 
 %% ---------------- User inputs ----------------
-runName  = 'WAV_RID_traj8';
-trajFile = fullfile(here, 'Calls', 'Trajectory_WAV_RID_8_aero.csv');
-stlFile  = fullfile(here, 'WAV_RID.stl');
+runName  = 'WAV_RID_traj9';
+trajFile = fullfile(here, 'WAV_RID_9', 'Trajectory_WAV_RID_9_aero.csv');
+stlFile  = fullfile(here, 'WAV_RID_9', 'WAV_RID_9.STL');
+vtkDir   = fullfile(here, 'WAV_RID_9');      % folder holding the case VTKs
 
-% One row per CHAMPS run. VTK files are looked up in Calls/.
+% One row per CHAMPS run. VTK files are looked up in vtkDir.
 % p_inf / T_inf: NaN -> standard atmosphere at alt_km; otherwise the run's Pref [Pa] / Tref [K].
 caseList = {
 %   name           vtk file                        Mach   AoA[deg]  alt[km]  p_inf  T_inf
-    'M8_a0',       'M8_a0_10p5km.vtk',             8.0,    0.00,    10.50,   NaN,   NaN
-    'M7_a2p5',     'M7_a2p5_24p5km.vtk',           7.0,    2.50,    24.50,   NaN,   NaN
-    'M4_a3p5',     'M4_a3p5_22km.vtk',             4.0,    3.50,    22.00,   NaN,   NaN
-    'M3_a3p5',     'M3_a3p5_26p5km.vtk',           3.0,    3.50,    26.50,   NaN,   NaN
-    'M3_am0p75',   'M3_am0p75_18p11km.vtk',        3.0,   -0.75,    18.11,   NaN,   NaN
+    'M8_a0',       'Mach7.98_aoa0.38_11.8km.vtk',             7.98,    0.38,    11.8,   NaN,   NaN
+    'M7_a3p5',     'Mach6.76_aoa3.61_25km.vtk',           6.76,    3.61,    25,   NaN,   NaN
+    'M4_a7',       'Mach3.87_aoa6.96_21km.vtk',             3.87,     6.96,    21,   NaN,   NaN
+%    'M3_a3p5',     'M3_a3p5_26p5km.vtk',           3.0,    3.50,    26.50,   NaN,   NaN
+%   'M3_am0p75',   'M3_am0p75_18p11km.vtk',        3.0,   -0.75,    18.11,   NaN,   NaN
 %   'M8_a0_SL',    'surf_out_000000001 (1).vtk',   8.0,    0.00,     0.00,   NaN,   NaN   % existing sea-level run: covers launch without 2.8x scaling
 };
 missingVTK = 'skip';    % 'skip': build loads from the cases that exist (warns) | 'error'
@@ -62,7 +64,7 @@ Rgas     = 287.05;
 recovery = 0.71^(1/3);  % for the T_aw scale (same as export_cfd_heating.m)
 
 % mapping options (same meaning as in export_cfd_heating.m)
-mapOpt = struct('stlUnits', 'mm', 'symAxis', 'y', 'mirrorCFD', 'auto', 'alignMode', 'shift', ...
+mapOpt = struct('stlUnits', 'm',   'symAxis', 'y', 'mirrorCFD', 'auto', 'alignMode', 'shift', ...
     'gamma', gamma, 'Rgas', 287.15, 'pran', 0.71, 'recovery', 'turbulent', 'dT_min', 20, ...
     'T_cold', 300, 'aftMask', 0.005, 'verbose', false);
 makePlots = true;
@@ -77,7 +79,7 @@ useIsaP = isnan(cs.p_inf);  cs.p_inf(useIsaP) = pI(useIsaP);
 useIsaT = isnan(cs.T_inf);  cs.T_inf(useIsaT) = Ti(useIsaT);
 cs.rho  = cs.p_inf ./ (Rgas*cs.T_inf);
 cs.V    = cs.Mach .* sqrt(gamma*Rgas*cs.T_inf);
-cs.vtkPath = fullfile(here, 'Calls', cs.vtk);
+cs.vtkPath = fullfile(vtkDir, cs.vtk);
 have = cellfun(@(f) exist(f, 'file') == 2, cs.vtkPath);
 fprintf('Cases (%d of %d VTKs found):\n', nnz(have), height(cs));
 for c = 1:height(cs)

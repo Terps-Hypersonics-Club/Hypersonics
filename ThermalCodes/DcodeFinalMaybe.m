@@ -21,14 +21,14 @@ function [altitude,rhofit,tempfit,localM,pfit] = altgen(inputfile)
         altitude(i,4) = (22.65*exp(1.73-0.000157*altitude(i,2)))*10^3; % Pressure [kPa]
        else
         altitude(i,7) = (-131.21 + 0.00299*altitude(i,2))+273.15; % Temperature [K]
-        altitude(i,4) = (2.488*(altitude(i,7))^-11.388)*10^3; % Pressure [kPa]
+        altitude(i,4) = (2.488*(altitude(i,7)/216.6)^-11.388)*10^3; % Pressure [kPa]
        end
        altitude(i,6) = altitude(i,4)/((.2869*altitude(i,7))*10^3);
     end
-    rhofit = @(t) interp1(altitude(:,1), altitude(:,6), t, 'spline'); % Fits a function to the air density with respect to the trajectory timescale
+    rhofit = @(t) exp(interp1(altitude(:,1), log(altitude(:,6)), min(t,altitude(end,1)), 'pchip')); % Fits a function to the air density with respect to the trajectory timescale
     tempfit = @(t) interp1(altitude(:,1), altitude(:,7), t, 'spline'); % Fits a function to the air temperature with respect to the trajectory timescale
     localM =  @(t) interp1(altitude(:,1), altitude(:,3), t, 'spline'); % Fits a function to the Mach number with respect to the trajectory timescale
-    pfit =  @(t) interp1(altitude(:,1), altitude(:,4), t, 'spline'); % Fits a function to the air pressure with respect to the trajectory timescale
+    pfit =  @(t) exp(interp1(altitude(:,1), log(altitude(:,4)), min(t,altitude(end,1)), 'pchip')); % Fits a function to the air pressure with respect to the trajectory timescale
 end
 function [cpfit,hfit] = air(inputfile)
     mcp = readmatrix(inputfile);
@@ -62,9 +62,22 @@ function data = accessMat(inputfile)
     end
     end
 end
-%% 1-Dimensional Implicit Heat Analysis with conduction, convection, and radiation
-function [T_history,dx] = run_1d_solver(inputfile,altitudefile,radius,layer,Nxs,mode,heat_mode)
-%warning('off','all');
+function [Taw,T_stag,dudx,rhoe,mue,tau_w,ue] = NormShock(lMach,p_inf,rho_inf,gamma,T_inf,R,radius,Pr)
+    r = (Pr)^(1/3);      % Recovery Factor
+    Cf = 4e-4;           % Skin friction coefficient
+    T_stag = T_inf*(1+(gamma-1)/2*lMach^2); % Stagnation Temperature [K]
+    rhoe = rho_inf*((gamma+1)*(lMach)^2/((gamma-1)*(lMach)^2+2)); % Edge Density
+    pe = p_inf*(1+(2*gamma)/(gamma+1)*(lMach^2-1)); % Edge pressure [Pa]
+    ue = lMach*sqrt(R*gamma*T_inf)*(1-(2*((lMach)^2-1)/((gamma+1)*lMach^2))); % Horizontal component of velocity at the edge
+    Te = T_inf*(pe/p_inf)/(rhoe/rho_inf); % Edge Temperature [K]
+    Taw = Te*(1+r*(gamma-1)/2*(ue/sqrt(R*gamma*Te))^2); % Adiabatic Wall Temperature [K]
+    mue = 1.716*10^-5.*(Te/273.1).^(3/2)*383.1./(Te+110); % Viscosity at the edge
+    dudx = (1/radius)*sqrt(2*(pe-p_inf)/rhoe); % Gradient of the velocity in the x1 direction
+    qe = 0.5*rhoe*ue^2; % Edge dynamic pressure
+    tau_w = Cf*qe; % Shear stress estimate
+end
+%% 1-Dimensional Explicit Heat Analysis with conduction, convection, and radiation
+function T_history = run_1d_solver(inputfile,altitudefile,radius,layer,Nxs,mode,heat_mode)
 % Access Material Properties
 materials = cell(length(inputfile),1);
 alphas = zeros(length(inputfile),1);
@@ -76,8 +89,7 @@ end
 % Accesses specific heat data based on temperature
 [cpfit,hfit] = air('N2.txt');
 [altitude,rhofit,tempfit,localM,pfit] = altgen(altitudefile);
-%eps = 0.5;        % Emissivity of Material
-sig = 5.67e-8;    % Stefan-Boltzmann Constant
+
 % Time and Spatial Step Initialization
 dxs = layer./(Nxs-1); % Spatial Steps
 time = altitude(end,1); % Time [s]
@@ -85,50 +97,40 @@ Fo = 0.4;         % Fourier Number
 dt = min(dxs)^2*Fo/max(alphas);
 Nt = ceil(time/dt); % # of Time Partitions
 dx = dxs(1);
+interfaces = cumsum(Nxs(1:end-1)); % Interface nodes
 
 % Parameters
 T_inf = altitude(1,7);        % Initial Ambient Temperature [K]
 T = zeros(sum(Nxs),1) + T_inf;      % Initial Temperature Profile (ITP)
 T_new = T;                    % Updated Temperature Profile (Initially the same as T)
 T_history = zeros(sum(Nxs),Nt);     % Temperature profile across all time
-T_history(:,1) = T;           % Initially set the first column to the ITP
-Pr = 0.72;                    % Prandtl Number
-r = (Pr)^(1/3);               % Recovery Factor
-RgasAir = 296.8;              % Gas specific constant [J/kg-K]
-ems = 0.9;
-p_inf = altitude(1,4);        % Freestream Pressure [Pa]
-qddot1 = zeros(Nt,1);         % Heat Flux Check
-gamma1 = qddot1;              % Gamma Check
+T_history(:,1) = T;     % Initially set the first column to the ITP
+Pr = 0.72;              % Prandtl Number
+R = 287.05;             % Gas specific constant [J/kg-K]
+sige = 5.67e-8*0.9;    % Radiation Constants
+qddot1 = zeros(Nt,1);   % Heat Flux Check
+gamma1 = qddot1;        % Gamma Check
+alpha = alphas(1); % First material
 
 % Temperature Profile Loop
-Cf = 4e-4;
 for p = 1:Nt
     fprintf('Progress: %g%%\n' , round(p/Nt*100,2))
-    fprintf('Time: %g\n', p*dt)
+    %fprintf('Time: %.4g\n', p*dt)
     lMach = localM(p*dt); % Local Mach number
-    p_inf = pfit(p*dt); % Local ambient pressure
-    gamma = cpfit(T_inf)/(cpfit(T_inf)-RgasAir); % Ratio of Specific Heats
-    T_stag = T_inf*(1+(gamma-1)/2*lMach^2); % Stagnation Temperature [K]
-    rhoe = rhofit(p*dt)*((gamma+1)*(lMach)^2/((gamma-1)*(lMach)^2+2)); % Edge Density
-    pe = p_inf*(1+(2*gamma)/(gamma+1)*((lMach*sind(90))^2-1)); % Edge pressure [Pa]
-    ue = lMach*sqrt(RgasAir*gamma*T_inf)*(1-(2*((lMach)^2-1)/((gamma+1)*lMach^2))); % Horizontal component of velocity at the edge
-    Te = T_inf*(pe/p_inf)/(rhoe/rhofit(p*dt)); % Edge Temperature [K]
-    Taw = Te*(1+r*(gamma-1)/2*(ue/sqrt(RgasAir*gamma*Te))^2); % Adiabatic Wall Temperature [K]
-    mue = 1.716*10^-5.*(Te/273.1).^(3/2)*383.1./(Te+110); % Viscosity at the edge
-    dudx = (1/radius)*sqrt(2*(pe-p_inf)/rhoe); % Gradient of the velocity in the x1 direction
+    p_inf = pfit(p*dt); % Local ambient pressure [Pa]
+    rho_inf = rhofit(p*dt); % Local ambient density [kg/m^3]
+    gamma = cpfit(T_inf)/(cpfit(T_inf)-R); % Ratio of Specific Heats
+    [Taw,T_stag,dudx,rhoe,mue,tau_w,ue] = NormShock(lMach,p_inf,rho_inf,gamma,T_inf,R,radius,Pr);
     h_w = hfit(T(1)); % Wall Enthalpy
     h_aw = hfit(Taw); % Adiabatic Wall Enthalpy
-    qe = 0.5*rhoe*ue^2;
     lambdaW = T(1)/T_stag;
     if lambdaW < 0.2
-        Fra = 1;
+        Fra = 1; % Reynolds' Analogy Factor
     elseif lambdaW >= 0.2 && lambdaW <=0.65
         Fra = 0.8311 + 0.9675*lambdaW - 0.6142*lambdaW^2;
     else
         Fra = 1.2;
     end
-   tau_w = Cf*qe;
-   cp1 = cpfit(T(1));
     if heat_mode == "surface"
     qconv = Fra*tau_w*cpfit(T(1))*(Taw-T(1))/ue;
     end
@@ -137,38 +139,37 @@ for p = 1:Nt
     end
     % Update the Edge Node
     data = materials{1};
-    alpha = alphas(1);
-    qcond = (alpha*dt/dx^2)*(T(2)-T(1));
-    qrad = sig*ems*(T(1))^4;
+    a = dt/(dx*data.Density_kg_m_3_*data.SpecificHeatCapacity_J_kg__C_);
+    qcond = (alphas(1)*dt/dx^2)*(T(2)-T(1));
+    qrad = sige*(T(1))^4;
     qddot = qconv-qrad;
-    dx = dxs(1);
-    T_new(1) = dt/(dx*data.Density_kg_m_3_*data.SpecificHeatCapacity_J_kg__C_)*qddot + qcond + T(1);
+    T_new(1) = a*qddot + qcond + T(1);
     for i = 2:sum(Nxs)-1
-        for j = 1:length(Nxs)-1
-          if i>(sum(Nxs)-Nxs(j+1))
-                data = materials{j};
-                alpha = alphas(j);
-                dx = dxs(j);
-                T_new(i) = (alpha*dt/dx^2)*(T(i+1)+T(i-1)) + (1-2*(alpha*dt/dx^2))*T(i);
-          elseif i==(sum(Nxs)-Nxs(j+1))
-                c = data.SpecificHeatCapacity_J_kg__C_;
-                rho = data.Density_kg_m_3_;
-                data1 = materials{j};
-                data2 = materials{j+1};
-                k1 = data1.ThermalConductivity_W_m__C_;
-                k2 = data2.ThermalConductivity_W_m__C_;
-                dudx1 = (T(i-1) - T(i))/dxs(j);
-                dudx2 = (T(i+1) - T(i))/dxs(j+1);
-                dkdudxdx = (k1*dudx1 + k2*dudx2)/((dxs(j+1)+dxs(j))/2);
-                T_new(i) = T(i) + dt/(rho*c)*dkdudxdx;
-          else
-              T_new(i) = (alpha*dt/dx^2)*(T(i+1)+T(i-1)) + (1-2*(alpha*dt/dx^2))*T(i);
-          end
+        jInterface = find(i == interfaces, 1);
+        if ~isempty(jInterface)
+            j = jInterface;
+            data1 = materials{j};
+            data2 = materials{j+1};
+            k1 = data1.ThermalConductivity_W_m__C_;
+            k2 = data2.ThermalConductivity_W_m__C_;
+            rc1 = data1.Density_kg_m_3_*data1.SpecificHeatCapacity_J_kg__C_;
+            rc2 = data2.Density_kg_m_3_*data2.SpecificHeatCapacity_J_kg__C_;
+            rctot = (rc1*dxs(j)+rc2*dxs(j+1))/(dxs(j)+dxs(j+1));
+            dudx1 = (T(i) - T(i-1))/dxs(j);
+            dudx2 = (T(i+1) - T(i))/dxs(j+1);
+            dkdudxdx = (k2*dudx2-k1*dudx1)/((dxs(j+1)+dxs(j))/2);
+            T_new(i) = T(i) + dt/rctot*dkdudxdx;
+        else
+            j = find(i <= cumsum(Nxs), 1);
+            data = materials{j};
+            alpha = alphas(j);
+            dx2 = dxs(j)^2;
+            T_new(i) = (alpha*dt/dx2)*(T(i+1)+T(i-1)) + (1-2*(alpha*dt/dx2))*T(i);
         end
     end
     % Update conductive end BC
-    T_new(sum(Nxs)) = T(sum(Nxs)) + (alpha*dt/dx^2)*(T(sum(Nxs)-1)-T(sum(Nxs)));
-    %T_new(Nx) = 288.16;
+    T_new(sum(Nxs)) = T(sum(Nxs)) + (alphas(end)*dt/dxs(end)^2)*(T(sum(Nxs)-1)-T(sum(Nxs)));
+    %T_new(sum(Nxs)) = 288.16;
     % Update for Next Time Step
     T = T_new;
     T_history(:,p) = T;
@@ -176,8 +177,8 @@ for p = 1:Nt
     gamma1(p,1) = gamma;
     qddot1(p,1) = qddot;
     %[Tmin,imin] = min(T); [Tmax,imax] = max(T);
-    %fprintf('h=%d Tinf=%.1f M=%.2f Taw=%.1f T1=%.1f cp1=%.1f Tmin=%.1f@%d Tmax=%.1f@%d\n', ...
-    %h_w, T_inf, lMach, Taw, T(1),cp1, Tmin, imin, Tmax, imax);
+    %fprintf('h=%d Tinf=%.1f M=%.2f pe=%.3f T1=%.1f cp1=%.1f Tmin=%.1f@%d Tmax=%.1f@%d\n', ...
+    %h_w, T_inf, lMach, pe, T(1),cp1, Tmin, imin, Tmax, imax);
 end
 
 % mode = 0 for steady state, mode = 1 for transient
@@ -202,11 +203,17 @@ if mode == "3D"
 	colorbar('eastoutside');
 	shading interp;
 elseif mode == "2D"
-    [x,t] = meshgrid(linspace(0,sum(layer),sum(Nxs)),linspace(0,time,Nt));
-    pcolor(x,t,T_history')
+    x = linspace(0, sum(layer), sum(Nxs));
+    t = linspace(0, time, Nt);
+
+    imagesc(x, t, T_history');
+    set(gca, 'YDir', 'normal');
+    set(gca, 'Layer', 'top');
+
     colormap(turbo(256));
     colorbar('eastoutside');
-	shading interp;
+	h = findobj(gca, 'Type', 'image');
+    set(h, 'Interpolation', 'bilinear');
     xlabel('Position [m]','FontSize',1);
 	ylabel('Time [s]','FontSize',1);
     if heat_mode == "nose"
@@ -269,4 +276,4 @@ end
 
 %% Function Call
 clear; clc;
-T_history1 = run_1d_solver({'ZrO2.txt','tungsten.txt'},'Trajectory_test_aero_grids_dense.csv',0.003,[0.0005 0.075],[2 50],"2D","nose");
+T_history1 = run_1d_solver({'HfO2.txt','inconel718.txt'},'Trajectory_WAV_RID_8_aero.csv',0.002,[0.0005 0.005],[2 5],"2D","surface");

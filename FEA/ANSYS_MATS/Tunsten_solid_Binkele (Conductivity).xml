@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EngineeringData version="20.1.0.181" versiondate="03/12/2019 17:50:00">
+  <Notes>
+    Materials data for Ansys Workbench exported from Granta Selector 2026 R1
+    Table name: JAHM Curve Data
+    Database edition: Metals plus
+    Date exported: 2026-10-14 14:17
+  </Notes>
+  <Materials>
+    <MatML_Doc>
+      <Material>
+        <BulkDetails>
+          <Name>Tungsten, solid, Binkele</Name>
+          <Description>Materials data from Granta Selector 2026 R1
+Record name: Tungsten, solid, Binkele
+Table name: JAHM Curve Data
+          </Description>
+          <PropertyData property="Color">
+            <Data format="string">-</Data>
+            <ParameterValue parameter="Red" format="float">
+              <Data>0</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Green" format="float">
+              <Data>0</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Blue" format="float">
+              <Data>0</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Material Property" format="string">
+              <Data>Appearance</Data>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Density">
+            <Data format="string">-</Data>
+            <ParameterValue parameter="Density" format="float">
+              <Data>19349.8,19349.8,19348.9,19345.8,19340.8,19334.9,19328.5,19321.6,19314.3,19306.8,19299.1,19291.3,19283.4,19275.4,19267.4,19259.4,19251.4,19243.5,19235.5,19227.5,19219.4,19211.3,19203.1,19194.9,19186.6,19178.4,19170.1,19161.8,19153.4,19145,19136.6,19128.2,19119.7,19111.1,19102.6,19094,19085.3,19076.6,19067.9,19059.1,19050.2,19041.3,19032.4,19023.4,19014.3,19005.2,18996,18986.8,18977.5,18968.1,18958.7,18949.2,18939.6,18930,18920.3,18910.5,18900.7,18890.7,18880.7,18870.6,18860.5,18850.2,18839.9,18829.5,18818.9,18808.4,18797.7,18786.9,18776,18765,18754,18742.8,18731.5,18720.2,18708.7,18697.1,18685.4,18673.7,18661.8,18649.8,18637.6,18625.4,18613,18600.6,18588,18575.3,18562.4,18549.5,18536.4,18523.2,18509.9,18496.4,18482.8,18469.1,18455.2,18441.2,18427.1,18412.8,18398.4,18383.8,18369.1,18354.3,18339.3,18324.1,18308.8,18293.4,18277.8,18262.1,18246.1,18230.1,18213.8,18197.4,18180.9,18164.2,18158.6</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>3,23,53,83,113,143,173,203,233,263,293,323,353,383,413,443,473,503,533,563,593,623,653,683,713,743,773,803,833,863,893,923,953,983,1013,1043,1073,1103,1133,1163,1193,1223,1253,1283,1313,1343,1373,1403,1433,1463,1493,1523,1553,1583,1613,1643,1673,1703,1733,1763,1793,1823,1853,1883,1913,1943,1973,2003,2033,2063,2093,2123,2153,2183,2213,2243,2273,2303,2333,2363,2393,2423,2453,2483,2513,2543,2573,2603,2633,2663,2693,2723,2753,2783,2813,2843,2873,2903,2933,2963,2993,3023,3053,3083,3113,3143,3173,3203,3233,3263,3293,3323,3353,3383,3393</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Elasticity">
+            <Data format="string">-</Data>
+            <Qualifier name="Behavior">Isotropic</Qualifier>
+            <ParameterValue parameter="Young's Modulus" format="float">
+              <Data>4.07632e+11,4.07191e+11,4.06319e+11,4.05458e+11,4.04608e+11,4.0377e+11,4.02943e+11,4.02127e+11,4.01323e+11,4.0053e+11,3.99747e+11,3.9896e+11,3.98168e+11,3.9737e+11,3.96565e+11,3.95755e+11,3.94939e+11,3.94116e+11,3.93287e+11,3.92453e+11,3.91612e+11,3.90766e+11,3.89913e+11,3.89054e+11,3.88189e+11,3.87318e+11,3.86441e+11,3.85559e+11,3.8467e+11,3.83774e+11,3.82874e+11,3.81966e+11,3.81053e+11,3.80134e+11,3.79209e+11,3.78278e+11,3.7734e+11,3.76397e+11,3.75448e+11,3.74492e+11,3.73531e+11,3.72563e+11,3.7159e+11,3.7061e+11,3.69625e+11,3.68633e+11,3.67635e+11,3.66632e+11,3.65622e+11,3.64606e+11,3.63584e+11,3.62556e+11,3.61522e+11,3.60482e+11,3.59436e+11,3.58384e+11,3.57326e+11,3.56262e+11,3.55192e+11,3.54116e+11,3.53033e+11,3.51945e+11,3.50851e+11,3.4975e+11,3.48644e+11,3.47532e+11,3.46413e+11,3.45289e+11,3.44158e+11,3.43021e+11,3.41879e+11,3.4073e+11,3.39575e+11,3.38415e+11,3.37248e+11,3.36075e+11,3.34896e+11,3.33711e+11,3.3252e+11,3.31323e+11,3.3012e+11,3.28911e+11,3.27696e+11,3.26475e+11,3.25248e+11,3.24014e+11,3.22775e+11,3.2153e+11,3.20278e+11,3.19021e+11,3.17757e+11,3.16488e+11,3.15212e+11,3.13931e+11,3.12643e+11,3.1135e+11,3.1005e+11,3.08744e+11,3.07432e+11,3.06115e+11,3.04302e+11,3.01968e+11,2.99597e+11,2.97186e+11,2.94737e+11,2.92249e+11,2.89722e+11,2.87157e+11,2.84553e+11,2.8191e+11,2.79229e+11,2.76508e+11,2.73749e+11,2.70952e+11,2.68115e+11,2.6524e+11,2.62326e+11,2.59374e+11,2.56382e+11,2.53352e+11,2.50284e+11,2.47176e+11,2.4403e+11,2.40845e+11,2.37621e+11,2.34359e+11,2.31058e+11,2.27718e+11,2.24339e+11,2.20922e+11,2.19171e+11</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Poisson's Ratio" format="float">
+              <Data>0.282021,0.282021,0.282021,0.282021,0.282021,0.282021,0.282021,0.282021,0.282021,0.282021,0.282109,0.282287,0.282469,0.282656,0.282847,0.283043,0.283242,0.283446,0.283655,0.283868,0.284085,0.284306,0.284532,0.284762,0.284996,0.285235,0.285478,0.285725,0.285977,0.286232,0.286493,0.286757,0.287026,0.287299,0.287577,0.287859,0.288145,0.288435,0.28873,0.289029,0.289333,0.289641,0.289953,0.290269,0.29059,0.290915,0.291244,0.291578,0.291916,0.292258,0.292605,0.292956,0.293311,0.293671,0.294035,0.294403,0.294776,0.295152,0.295534,0.295919,0.296309,0.296703,0.297102,0.297504,0.297912,0.298323,0.298739,0.299159,0.299583,0.300012,0.300445,0.300882,0.301324,0.30177,0.30222,0.302675,0.303134,0.303597,0.304065,0.304537,0.305013,0.305494,0.305979,0.306468,0.306961,0.307459,0.307961,0.308468,0.308979,0.309494,0.310013,0.310537,0.311065,0.311597,0.312134,0.312675,0.313221,0.31377,0.314324,0.314883,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167,0.315167</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>93,103,123,143,163,183,203,223,243,263,283,303,323,343,363,383,403,423,443,463,483,503,523,543,563,583,603,623,643,663,683,703,723,743,763,783,803,823,843,863,883,903,923,943,963,983,1003,1023,1043,1063,1083,1103,1123,1143,1163,1183,1203,1223,1243,1263,1283,1303,1323,1343,1363,1383,1403,1423,1443,1463,1483,1503,1523,1543,1563,1583,1603,1623,1643,1663,1683,1703,1723,1743,1763,1783,1803,1823,1843,1863,1883,1903,1923,1943,1963,1983,2003,2023,2043,2063,2083,2103,2123,2143,2163,2183,2203,2223,2243,2263,2283,2303,2323,2343,2363,2383,2403,2423,2443,2463,2483,2503,2523,2543,2563,2583,2603,2623,2643,2663,2673.16</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Thermal Conductivity">
+            <Data format="string">-</Data>
+            <Qualifier name="Behavior">Isotropic</Qualifier>
+            <ParameterValue parameter="Thermal Conductivity" format="float">
+              <Data>180.258,176.011,169.703,163.527,157.537,151.78,146.292,141.104,136.237,131.705,127.518,123.679,120.184,117.025,114.193,111.67,109.439,107.478,105.763,104.27,102.973,101.844,100.858,99.9885,99.2099,98.4992,97.835,97.1989,96.5753,95.9527,95.3237,94.6856,94.0413,93.3994,92.8033,92.2441,91.6966,91.1605,90.6358,90.1223,89.6198,89.1281,88.6471,88.1767,87.7166,87.2668,86.827,86.3971,85.9771,85.5666,85.1656,84.774,84.3915,84.0181,83.6536,83.2978,82.9507,82.6121,82.2818,81.9597,81.6457,81.3397,81.0415,80.751,80.4681,80.1926,79.9245,79.6636,79.4097,79.1629,78.9228,78.6895,78.4629,78.2427,78.0289,77.8214,77.6201,77.4249,77.2356,77.0522,76.8745,76.7025,76.5361,76.3751,76.2195,76.0692,75.924,75.7839,75.6488,75.5186,75.3933,75.2726,75.1566,75.0452,74.9382,74.8357,74.7375,74.6435,74.5537,74.468,74.3863,74.3085,74.2347,74.1646,74.0983,74.0357,73.9767,73.9213,73.8693,73.8208,73.7757,73.7339,73.6953,73.66</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>273,293,323,353,383,413,443,473,503,533,563,593,623,653,683,713,743,773,803,833,863,893,923,953,983,1013,1043,1073,1103,1133,1163,1193,1223,1253,1283,1313,1343,1373,1403,1433,1463,1493,1523,1553,1583,1613,1643,1673,1703,1733,1763,1793,1823,1853,1883,1913,1943,1973,2003,2033,2063,2093,2123,2153,2183,2213,2243,2273,2303,2333,2363,2393,2423,2453,2483,2513,2543,2573,2603,2633,2663,2693,2723,2753,2783,2813,2843,2873,2903,2933,2963,2993,3023,3053,3083,3113,3143,3173,3203,3233,3263,3293,3323,3353,3383,3413,3443,3473,3503,3533,3563,3593,3623,3653</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Material Unique Id">
+            <Data format="string">-</Data>
+            <Qualifier name="guid">B6AE776B-3808-485C-96DE-EB68BD2315EA</Qualifier>
+            <Qualifier name="Display">False</Qualifier>
+          </PropertyData>
+          <PropertyData property="Granta material details" delimiter=";">
+            <Data format="string">-</Data>
+            <Qualifier name="Granta material name">Tungsten, solid, Binkele</Qualifier>
+            <Qualifier name="Model type">Linear isotropic</Qualifier>
+            <Qualifier name="Assignment made by"></Qualifier>
+            <Qualifier name="Assignment date/time">2026-10-14 14:17</Qualifier>
+            <Qualifier name="Database name">Granta Selector 2026 R1 - Metals plus</Qualifier>
+            <Qualifier name="Table name">JAHM Curve Data</Qualifier>
+            <Qualifier name="Data link version">1</Qualifier>
+            <Qualifier name="History guid">B6AE776B-3808-485C-96DE-EB68BD2315EA</Qualifier>
+            <Qualifier name="Version guid">B6AE776B-3808-485C-96DE-EB68BD2315EA</Qualifier>
+            <Qualifier name="Model guid">11DAACFB-541C-4C27-9D96-65A82198C2D4</Qualifier>
+            <Qualifier name="Model version">0</Qualifier>
+            <Qualifier name="Display">False</Qualifier>
+          </PropertyData>
+        </BulkDetails>
+      </Material>
+      <Metadata>
+        <ParameterDetails id="Blue">
+          <Name>Blue</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Density">
+          <Name>Density</Name>
+          <Units>
+            <Unit>
+              <Name>kg m^-3</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Green">
+          <Name>Green</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Material Property">
+          <Name>Material Property</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Poisson's Ratio">
+          <Name>Poisson's Ratio</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Red">
+          <Name>Red</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Temperature">
+          <Name>Temperature</Name>
+          <Units>
+            <Unit>
+              <Name>K</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Thermal Conductivity">
+          <Name>Thermal Conductivity</Name>
+          <Units name="Thermal Conductivity">
+            <Unit>
+              <Name>W m^-1 C^-1</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Young's Modulus">
+          <Name>Young's Modulus</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <PropertyDetails id="Color">
+          <Unitless />
+          <Name>Color</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Density">
+          <Unitless />
+          <Name>Density</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Elasticity">
+          <Unitless />
+          <Name>Elasticity</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Granta material details">
+          <Unitless />
+          <Name>Granta material details</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Material Unique Id">
+          <Unitless />
+          <Name>Material Unique Id</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Thermal Conductivity">
+          <Unitless />
+          <Name>Thermal Conductivity</Name>
+        </PropertyDetails>
+      </Metadata>
+    </MatML_Doc>
+  </Materials>
+</EngineeringData>

@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EngineeringData version="20.1.0.181" versiondate="03/12/2019 17:50:00">
+  <Notes>
+    Materials data for Ansys Workbench exported from Granta Selector 2026 R1
+    Table name: MaterialUniverse
+    Database edition: Metals plus
+    Date exported: 2026-10-14 14:11
+  </Notes>
+  <Materials>
+    <MatML_Doc>
+      <Material>
+        <BulkDetails>
+          <Name>Aluminum, 6061, T6</Name>
+          <Description>Materials data from Granta Selector 2026 R1
+Record name: Aluminum, 6061, T6
+Table name: MaterialUniverse
+
+Aluminum, 6061, T6, wrought
+          </Description>
+          <PropertyData property="Color">
+            <Data format="string">-</Data>
+            <ParameterValue parameter="Red" format="float">
+              <Data>234</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Green" format="float">
+              <Data>234</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Blue" format="float">
+              <Data>234</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Material Property" format="string">
+              <Data>Appearance</Data>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Density">
+            <Data format="string">-</Data>
+            <ParameterValue parameter="Density" format="float">
+              <Data>2712.93</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>296.15</Data>
+              <Qualifier name="Variable Type">Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Elasticity">
+            <Data format="string">-</Data>
+            <Qualifier name="Behavior">Isotropic</Qualifier>
+            <ParameterValue parameter="Young's Modulus" format="float">
+              <Data>7.66e+10,7.558e+10,7.318e+10,7.029e+10,6.735e+10,6.433e+10,6.078e+10,5.579e+10,4.798e+10,3.557e+10</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Poisson's Ratio" format="float">
+              <Data>0.329962,0.329962,0.329962,0.329962,0.329962,0.329962,0.329962,0.329962,0.329962,0.329962</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>3.05,88.55,174.11,259.67,345.22,430.75,516.35,601.85,687.45,773.05</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Isotropic Hardening">
+            <Data format="string">-</Data>
+            <Qualifier name="Definition">Multilinear</Qualifier>
+            <ParameterValue parameter="Stress" format="float">
+              <Data>3.958e+8,4.35e+8,4.733e+8,5.102e+8,5.454e+8,5.786e+8,6.094e+8,6.374e+8,6.624e+8,6.84e+8,3.497e+8,3.806e+8,4.067e+8,4.288e+8,4.473e+8,4.628e+8,4.758e+8,4.871e+8,4.97e+8,5.061e+8,3.069e+8,3.225e+8,3.363e+8,3.486e+8,3.595e+8,3.691e+8,3.775e+8,3.85e+8,3.916e+8,3.975e+8,2.828e+8,2.97e+8,3.095e+8,3.205e+8,3.301e+8,3.385e+8,3.457e+8,3.519e+8,3.572e+8,3.617e+8</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Plastic Strain" format="float">
+              <Data>0,0.02556,0.05111,0.07667,0.1022,0.1278,0.1533,0.1789,0.2044,0.23,0,0.01889,0.03778,0.05667,0.07556,0.09444,0.1133,0.1322,0.1511,0.17,0,0.01333,0.02667,0.04,0.05333,0.06667,0.08,0.09333,0.1067,0.12,0,0.008889,0.01778,0.02667,0.03556,0.04444,0.05333,0.06222,0.07111,0.08</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>20,20,20,20,20,20,20,20,20,20,77,77,77,77,77,77,77,77,77,77,195,195,195,195,195,195,195,195,195,195,293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Isotropic Hardening">
+            <Data format="string">-</Data>
+            <Qualifier name="Definition">Bilinear</Qualifier>
+            <ParameterValue parameter="Yield Strength" format="float">
+              <Data>2.5923e+8</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Tangent Modulus" format="float">
+              <Data>7.14e+8</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>296.15</Data>
+              <Qualifier name="Variable Type">Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="S-N Curve">
+            <Data format="string">-</Data>
+            <Qualifier name="Interpolation">Semi-Log</Qualifier>
+            <ParameterValue parameter="Alternating Stress" format="float">
+              <Data>2.186e+8,2.029e+8,1.885e+8,1.752e+8,1.629e+8,1.515e+8,1.409e+8,1.31e+8,1.219e+8,1.134e+8,1.054e+8,1.286e+8,1.229e+8,1.175e+8,1.122e+8,1.07e+8,1.02e+8,9.705e+7,9.226e+7,8.762e+7,8.313e+7,7.878e+7,7.055e+7,6.882e+7,6.708e+7,6.532e+7,6.352e+7,6.171e+7,5.987e+7,5.801e+7,5.614e+7,5.426e+7,5.237e+7</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Cycles" format="float">
+              <Data>1000,3162,10000,31620,1.0e+5,316200,1.0e+6,3162000,1.0e+7,3.162e+7,1.0e+8,1000,3162,10000,31620,1.0e+5,316200,1.0e+6,3162000,1.0e+7,3.162e+7,1.0e+8,1000,3162,10000,31620,1.0e+5,316200,1.0e+6,3162000,1.0e+7,3.162e+7,1.0e+8</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="R-Ratio" format="float">
+              <Data>-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Tensile Yield Strength">
+            <Data format="string">-</Data>
+            <ParameterValue parameter="Tensile Yield Strength" format="float">
+              <Data>3.65e+8,3.378e+8,3.145e+8,2.995e+8,2.906e+8,2.857e+8,2.829e+8,2.799e+8,2.747e+8,2.571e+8,1.897e+8,9.801e+7,4.669e+7,3.38e+7,2.64e+7,2.143e+7,1.73e+7,1.336e+7,9842000,7.85e+6</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>12.95,55.15,97.25,139.35,181.42,223.53,265.632,307.74,349.84,391.95,434.05,476.15,518.25,560.35,602.45,644.55,686.65,728.75,770.85,813.05</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Tensile Ultimate Strength">
+            <Data format="string">-</Data>
+            <ParameterValue parameter="Tensile Ultimate Strength" format="float">
+              <Data>503541000,467898000,433071000,395206000,367731000,351375000,338461000,325688000,3.1094e+8,293327000,273616000,254782000,225491000,199207000,1.6606e+8,138056000,108914000,78103700,59431300,39646400</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>11.2133,28.7339,54.1628,89.3234,127.52,165.505,213.694,262.01,305.784,353.026,391.839,411.112,426.722,439.368,456.675,471.175,485.534,505.758,521.149,545.672</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Compressive Yield Strength">
+            <Data format="string">-</Data>
+            <ParameterValue parameter="Compressive Yield Strength" format="float">
+              <Data>2.5923e+8</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>296.15</Data>
+              <Qualifier name="Variable Type">Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Coefficient of Thermal Expansion">
+            <Data format="string">-</Data>
+            <Qualifier name="Definition">Secant</Qualifier>
+            <Qualifier name="Behavior">Isotropic</Qualifier>
+            <ParameterValue parameter="Coefficient of Thermal Expansion" format="float">
+              <Data>1.497e-5,1.839e-5,2.053e-5,2.178e-5,2.255e-5,2.314e-5,2.372e-5,2.435e-5,2.498e-5,2.545e-5</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>22.95,85.25,147.45,209.67,271.889,334.11,396.35,458.55,520.75,583.05</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Zero-Thermal-Strain Reference Temperature">
+            <Data format="string">-</Data>
+            <Qualifier name="Definition">Secant</Qualifier>
+            <Qualifier name="Behavior">Isotropic</Qualifier>
+            <ParameterValue parameter="Zero-Thermal-Strain Reference Temperature" format="float">
+              <Data>293.15</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Material Property" format="string">
+              <Data>Coefficient of Thermal Expansion</Data>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Thermal Conductivity">
+            <Data format="string">-</Data>
+            <Qualifier name="Behavior">Isotropic</Qualifier>
+            <ParameterValue parameter="Thermal Conductivity" format="float">
+              <Data>18.77,98.14,133.3,152.2,165.8,175.9,181.8,183.6,181.2,174.7</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>12.95,100.75,188.56,276.333,364.11,451.85,539.65,627.45,715.25,803.05</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Specific Heat">
+            <Data format="string">-</Data>
+            <Qualifier name="Definition">Constant Pressure</Qualifier>
+            <Qualifier name="Symbol">Cᵨ</Qualifier>
+            <ParameterValue parameter="Specific Heat" format="float">
+              <Data>2.414,264,557.7,724.2,836.3,914.7,968.5,1006,1033,1055,1076,1098,1123,1151,1179</Data>
+              <Qualifier name="Variable Type">Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent,Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>12.95,69.45,125.85,182.29,238.71,295.14,351.57,408.05,464.45,520.85,577.25,633.75,690.15,746.55,803.05</Data>
+              <Qualifier name="Variable Type">Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent,Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Resistivity">
+            <Data format="string">-</Data>
+            <Qualifier name="Behavior">Isotropic</Qualifier>
+            <ParameterValue parameter="Resistivity" format="float">
+              <Data>3.99875e-8</Data>
+              <Qualifier name="Variable Type">Dependent</Qualifier>
+            </ParameterValue>
+            <ParameterValue parameter="Temperature" format="float">
+              <Data>296.15</Data>
+              <Qualifier name="Variable Type">Independent</Qualifier>
+            </ParameterValue>
+          </PropertyData>
+          <PropertyData property="Material Unique Id">
+            <Data format="string">-</Data>
+            <Qualifier name="guid">ED9554A2-D63E-499F-B44E-AC0EE792B988</Qualifier>
+            <Qualifier name="Display">False</Qualifier>
+          </PropertyData>
+          <PropertyData property="Granta material details" delimiter=";">
+            <Data format="string">-</Data>
+            <Qualifier name="Granta material name">Aluminum, 6061, T6</Qualifier>
+            <Qualifier name="Model type">Linear isotropic</Qualifier>
+            <Qualifier name="Assignment made by"></Qualifier>
+            <Qualifier name="Assignment date/time">2026-10-14 14:11</Qualifier>
+            <Qualifier name="Database name">Granta Selector 2026 R1 - Metals plus</Qualifier>
+            <Qualifier name="Table name">MaterialUniverse</Qualifier>
+            <Qualifier name="Data link version">1</Qualifier>
+            <Qualifier name="History guid">ED9554A2-D63E-499F-B44E-AC0EE792B988</Qualifier>
+            <Qualifier name="Version guid">ED9554A2-D63E-499F-B44E-AC0EE792B988</Qualifier>
+            <Qualifier name="Model guid">11DAACFB-541C-4C27-9D96-65A82198C2D4</Qualifier>
+            <Qualifier name="Model version">0</Qualifier>
+            <Qualifier name="Display">False</Qualifier>
+          </PropertyData>
+        </BulkDetails>
+      </Material>
+      <Metadata>
+        <ParameterDetails id="Alternating Stress">
+          <Name>Alternating Stress</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Blue">
+          <Name>Blue</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Coefficient of Thermal Expansion">
+          <Name>Coefficient of Thermal Expansion</Name>
+          <Units name="InvTemp1">
+            <Unit>
+              <Name>C^-1</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Compressive Yield Strength">
+          <Name>Compressive Yield Strength</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Cycles">
+          <Name>Cycles</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Density">
+          <Name>Density</Name>
+          <Units>
+            <Unit>
+              <Name>kg m^-3</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Green">
+          <Name>Green</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Material Property">
+          <Name>Material Property</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Plastic Strain">
+          <Name>Plastic Strain</Name>
+          <Units name="Strain">
+            <Unit>
+              <Name>m m^-1</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Poisson's Ratio">
+          <Name>Poisson's Ratio</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Red">
+          <Name>Red</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Resistivity">
+          <Name>Resistivity</Name>
+          <Units>
+            <Unit>
+              <Name>ohm m</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="R-Ratio">
+          <Name>R-Ratio</Name>
+          <Unitless />
+        </ParameterDetails>
+        <ParameterDetails id="Specific Heat">
+          <Name>Specific Heat</Name>
+          <Units name="Specific Heat Capacity">
+            <Unit>
+              <Name>J kg^-1 C^-1</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Stress">
+          <Name>Stress</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Tangent Modulus">
+          <Name>Tangent Modulus</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Temperature">
+          <Name>Temperature</Name>
+          <Units>
+            <Unit>
+              <Name>K</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Tensile Ultimate Strength">
+          <Name>Tensile Ultimate Strength</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Tensile Yield Strength">
+          <Name>Tensile Yield Strength</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Thermal Conductivity">
+          <Name>Thermal Conductivity</Name>
+          <Units name="Thermal Conductivity">
+            <Unit>
+              <Name>W m^-1 C^-1</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Yield Strength">
+          <Name>Yield Strength</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Young's Modulus">
+          <Name>Young's Modulus</Name>
+          <Units name="Stress">
+            <Unit>
+              <Name>Pa</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <ParameterDetails id="Zero-Thermal-Strain Reference Temperature">
+          <Name>Zero-Thermal-Strain Reference Temperature</Name>
+          <Units>
+            <Unit>
+              <Name>K</Name>
+            </Unit>
+          </Units>
+        </ParameterDetails>
+        <PropertyDetails id="Coefficient of Thermal Expansion">
+          <Unitless />
+          <Name>Coefficient of Thermal Expansion</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Color">
+          <Unitless />
+          <Name>Color</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Compressive Yield Strength">
+          <Unitless />
+          <Name>Compressive Yield Strength</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Density">
+          <Unitless />
+          <Name>Density</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Elasticity">
+          <Unitless />
+          <Name>Elasticity</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Granta material details">
+          <Unitless />
+          <Name>Granta material details</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Isotropic Hardening">
+          <Unitless />
+          <Name>Isotropic Hardening</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Material Unique Id">
+          <Unitless />
+          <Name>Material Unique Id</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Resistivity">
+          <Unitless />
+          <Name>Resistivity</Name>
+        </PropertyDetails>
+        <PropertyDetails id="S-N Curve">
+          <Unitless />
+          <Name>S-N Curve</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Specific Heat">
+          <Unitless />
+          <Name>Specific Heat</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Tensile Ultimate Strength">
+          <Unitless />
+          <Name>Tensile Ultimate Strength</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Tensile Yield Strength">
+          <Unitless />
+          <Name>Tensile Yield Strength</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Thermal Conductivity">
+          <Unitless />
+          <Name>Thermal Conductivity</Name>
+        </PropertyDetails>
+        <PropertyDetails id="Zero-Thermal-Strain Reference Temperature">
+          <Unitless />
+          <Name>Zero-Thermal-Strain Reference Temperature</Name>
+        </PropertyDetails>
+      </Metadata>
+    </MatML_Doc>
+  </Materials>
+</EngineeringData>

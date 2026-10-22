@@ -1,0 +1,235 @@
+Dictionary
+{
+	Tref     = 216.66
+	Pref     = 11555
+	Twall    = 525
+	gamma    = 1.4
+	Rgas     = 287.15
+	mach     = 3.56
+	aoa      = -1.48
+	umag     = mach*sqrt(gamma*Rgas*Tref)
+	Lscale   = 1.046
+	ref_area = .2297
+	scaling  = 1.000
+
+	Qinf
+	{
+		pinf   = Pref
+		Tinf   = Tref
+		uinf   = umag*cos(aoa*#pi/180.0)
+		vinf   = 0.0
+		winf   = umag*sin(aoa*#pi/180.0)
+		rhoinf = Qinf::pinf/(Rgas*Tref)
+	}
+}
+
+Geometries
+{
+	main
+	{
+		filename    = "WAV_RID_FTEST/WAV_RID_FTEST1.vtk"
+		is_external = true
+	}
+
+}
+
+Domain
+{
+	Grid
+	{
+		bounds          = [-0.3, 2.3, -0.2, 0.5, -0.2, 0.4]
+		freestream_mach = "mach"
+		flow_direction  = ["Qinf::uinf/umag", "Qinf::vinf/umag", "Qinf::winf/umag"]
+		grid_scaling    = .8
+	}
+
+	Spacing
+	{
+		dx_base = [0.008, 0.04, 0.008]
+	}
+
+	RefinementZones
+	{
+		myRefinement
+		{
+			specifier = "surface_component"
+			component = "any"
+			spacing   = "dx_base"
+			distance  = 0.02
+		}
+	}
+
+	IBM
+	{
+		BoundaryConditions
+		{
+			Wall
+			{
+				component  = "any"
+				specifier  = "slipwall"
+				geometries = "any"
+			}
+		}
+	}
+
+	WallModel
+	{
+		variant = "none"
+		IBL
+		{
+		Freestream
+		{
+			P = "Qinf::pinf"
+			U = "Qinf::uinf"
+			V = "Qinf::vinf"
+			W = "Qinf::winf"
+			T = "Qinf::Tinf"
+		}
+
+		method            = "zoby"
+		viscous_method    = "transitional"
+
+		BoundaryConditions
+		{
+			radbc
+				{
+					component             = "any"
+					radiative             = true
+					emissivity            = 0.85
+					reference_temperature = "Qinf::Tinf"
+				}
+		}
+	}
+
+		
+	}
+
+	Properties
+	{
+		phys_model = "ideal_gas"
+		gamma      = "gamma"
+		Rgas       = "Rgas"
+	}
+
+	Numerical
+	{
+		conv_scheme     = weno3fds_blended
+		conv_scheme_ibm = "first_order_sw"
+		visc_scheme     = "none"
+	}
+
+	DomainBC
+	{
+		Xmin
+		{
+			specifier = "supersonic_inflow"
+			P = "Qinf::pinf"
+			T = "Qinf::Tinf"
+			U = "Qinf::uinf"
+			V = "Qinf::vinf"
+			W = "Qinf::winf"
+		}
+		Xmax
+		{
+			specifier = "supersonic_outflow"
+		}
+		Ymin
+		{
+			specifier = "supersonic_outflow"
+		}
+		Ymax
+		{
+			specifier = "supersonic_outflow"
+		}
+		Zmin
+		{
+			specifier = "supersonic_outflow"
+		}
+		Zmax
+		{
+			specifier = "supersonic_inflow"
+			P = "Qinf::pinf"
+			T = "Qinf::Tinf"
+			U = "Qinf::uinf"
+			V = "Qinf::vinf"
+			W = "Qinf::winf"
+		}
+	}
+
+	InitialCondition
+	{
+		P = "Qinf::pinf"
+		T = "Qinf::Tinf"
+		U = "Qinf::uinf"
+		V = "Qinf::vinf"
+		W = "Qinf::winf"
+	}
+}
+
+Restart
+{
+	file = "none"
+}
+
+Integration
+{
+	scheme = "sequence"
+
+	Subintegrator
+	{
+		CFL       = 1.0
+		fixed_CFL = true
+		scheme    = "jamms"
+	}
+
+	Freestream
+	{
+		P = "Qinf::pinf"
+		T = "Qinf::Tinf"
+		U = "Qinf::uinf"
+		V = "Qinf::vinf"
+		W = "Qinf::winf"
+	}
+}
+
+IO
+{
+	output_directory = "aCase1"
+
+	Outputs
+	{
+		surf_out
+		{
+			specifier = "surface"
+			geometry  = "main"
+			domain    = "main"
+		}
+		
+//		symY_plane
+//		{
+//			specifier = "slice"
+//			position  = 0.1489
+//			direction = 1
+//			domain    = "main"
+//		}
+
+//		vol
+//		{
+//			specifier    = "volume"
+//			domain       = "main"
+//			global_frame = false
+//			file_type    = "pvtk"
+//		}
+
+//		surf_force
+//		{
+//			specifier = "force"
+//			domain = "main"
+//			global_frame = false
+//
+//			force_normalization = "1.0"
+//			moment_normalization = "1.0"
+//			moment_center = ["1","0.2","0.125"]
+//		}
+	}
+}

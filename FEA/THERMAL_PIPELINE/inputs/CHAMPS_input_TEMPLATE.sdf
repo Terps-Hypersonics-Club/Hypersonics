@@ -1,3 +1,7 @@
+// TEMPLATE (THERMAL_PIPELINE). Per run, change:
+//   Tref, Pref, mach, aoa   <- from the step1 table
+//   Geometries/main/filename <- the WAV_RID_9_FINS CHAMPS geometry (same for every run)
+//   radbc                    <- isothermal wall at 315 K (this template is still radiative)
 Dictionary
 {
 	Tref     = 216.66

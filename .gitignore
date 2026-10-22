@@ -20,3 +20,25 @@ codegen/
 # Python bytecode
 __pycache__/
 *.pyc
+
+/FEA/WAV_RID_9_files/
+
+/FEA/Calls/surf_out_000000001.vtk
+
+/FEA/WAV_RID_9.wbpj
+
+# ANSYS Workbench projects and solver files (too large for GitHub; share projects through Drive)
+*.wbpj
+*_files/
+.*_files.backup/
+_ProjectScratch/
+*.rth
+*.rst
+*.mechdb
+
+# CAD over GitHub's 100 MB file limit
+WAV_RID_9_Internals.prt
+
+# THERMAL_PIPELINE generated files
+/FEA/THERMAL_PIPELINE/outputs/*
+!/FEA/THERMAL_PIPELINE/outputs/.gitkeep

@@ -23,8 +23,8 @@ clear; clc; close all;
 here = fileparts(mfilename('fullpath'));
 
 %% ---------------- User inputs ----------------
-trajFile  = fullfile(here, 'Calls', 'Trajectory_WAV_RID_9_aero.csv');
-nCases    = [5];        % [] -> as many cases as the tolerances need; N -> best split into at most N cases
+trajFile  = fullfile(here, 'WAV_RID_9_FINS', 'Trajectory_WAV_RID_COMP_aero.csv');
+nCases    = [10];        % [] -> as many cases as the tolerances need; N -> best split into at most N cases
 dMach     = 0.5;       % max Mach spread within one case
 dAlpha    = 1.0;       % [deg] max angle-of-attack spread within one case
 heatTol   = 1.0;       % max heating spread within one case (1.0 -> max/min <= 2). The schedule's

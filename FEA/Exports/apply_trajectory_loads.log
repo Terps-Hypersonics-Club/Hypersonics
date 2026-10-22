@@ -1,0 +1,20 @@
+Faces file: 5 cases; time table: 82 rows, t = 0 to 851.158108032223 s
+Analysis: Transient Thermal, scope: Skin
+Deleting earlier Imported Load group 'Imported Load (External Data) '
+External Data: C:\Users\Kevin Kyle\Documents\Hypersonics\FEA\Exports\WAV_RID_traj9_faces.csv (columns X, Y, Z [m], 5 h [W/m^2K], 5 T_aw [K])
+Table: 7 column(s), 1 row(s)
+  col 0 'Film Coefficient'           row0 =                                (str)
+  col 1 'Ambient Temperature'        row0 =                                (str)
+  col 2 'Analysis Time'              row0 = 1.0                            (float)
+  col 3 'Scale [Film Coefficient]'   row0 = 1.0                            (float)
+  col 4 'Offset [Film Coefficient]'  row0 = 0.0                            (float)
+  col 5 'Scale [Ambient Temperature]' row0 = 1.0                            (float)
+  col 6 'Offset [Ambient Temperature]' row0 = 0.0                            (float)
+  dropdown col 0: ['File1:h_M8_a0', 'File1:h_M7_a3p5', 'File1:h_M4_a7', 'File1:h_M3_a1p5', 'File1:h_M3_aneg1p5']
+  dropdown col 1: ['File1:Taw_M8_a0', 'File1:Taw_M7_a3p5', 'File1:Taw_M4_a7', 'File1:Taw_M3_a1p5', 'File1:Taw_M3_aneg1p5']
+row 0: time 0.0 | film File1:h_M8_a0 x 3.27153371997 | ambient File1:Taw_M8_a0 x 1.33615999869
+row 81: time 851.158108032 | film File1:h_M3_aneg1p5 x 4.41974670701 | ambient File1:Taw_M3_aneg1p5 x 1.06286654061
+Imported Convection: 82 rows set up on Skin (not imported yet: set the mapping options first)
+Radiation: emissivity 0.85 to 250 K on Skin
+Analysis Settings: 5 steps ending at 71.5, 526.0, 779.7, 810.3, 851.2 s
+Done. By hand on Imported Convection: Tabular Loading = Ramped, mapping = Nearest, Outside Option = Ignore; then right-click > Import Load and check contours at a few Analysis Times.

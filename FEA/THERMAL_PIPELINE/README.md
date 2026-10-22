@@ -26,8 +26,16 @@ Rename each surface output to its `VTK_file` name and put it in `cfd/`.
 2. Run `step2_build_ansys_loads.m`. It writes two CSVs to `outputs/`.
 
 ## 4. ANSYS Mechanical
+Geometry (once):
+1. Workbench: Transient Thermal → right-click Geometry → Import →
+   `../WAV_RID_9_FINS/WAV_RID_9_FINS_FINAL.SLDPRT`. In Geometry Properties, untick Surface Bodies.
+2. Right-click Geometry → Edit in Discovery. There should be 23 solid bodies. Delete any loose surfaces.
+3. Cut in half: select all bodies → Split with the vertical plane through the centerline
+   (the plane the fins mirror across) → delete one half.
+4. Close Discovery. Leave bodies separate: Mechanical bonds touching bodies with contacts.
+   The cut face needs no load (no heat flow across it = symmetry).
+
 Set up first:
-- Geometry imported, cut in half at the symmetry plane
 - Materials assigned (see `../README.md`), mesh done
 - Transient Thermal: Initial Temperature 315 K
 - Named selection **`Skin`** = outer heated faces (not the cut face)

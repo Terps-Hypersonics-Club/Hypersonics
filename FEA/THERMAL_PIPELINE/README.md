@@ -17,6 +17,17 @@ Run `step1_plan_cfd_cases.m`. The `fixedCases` table at the top lists the 5 runs
 (file, Mach, AoA, altitude). Each trajectory time gets the nearest run.
 New CFD runs: add a row per file. Empty `fixedCases = {}` plans brand-new cases instead.
 
+### Using your own CFD runs
+1. Put the surface VTKs in `cfd/` (remove the ones you are not using).
+2. `step1_plan_cfd_cases.m`, `fixedCases`: one row per file, with its Mach, AoA [deg] and
+   altitude [km]. The scripts assume each run's freestream is the standard atmosphere at that
+   altitude; if you ran other Pref/Tref values, use the altitude that matches them.
+3. `step2_build_ansys_loads.m`, `wallBC`: `'radiative'` or `'isothermal'` (then `T_wall_cfd` =
+   your wall temperature). All runs must use the same wall BC; step 2 stops if one does not match.
+4. All runs must be on the same CHAMPS geometry file, and that geometry must match the model in
+   ANSYS. If you changed the vehicle, export a new STL of it into `geometry/` and set `stlFile`.
+   Step 2 stops if the runs' surface meshes differ, and warns if CFD and STL are more than a few mm apart.
+
 ## 2. Build the loads (MATLAB)
 Run `step2_build_ansys_loads.m`. Settings at the top are already right for this data:
 `stlFile` = `geometry/WAV_RID_9B.stl`, `stlUnits = 'mm'`, `wallBC = 'radiative'`.

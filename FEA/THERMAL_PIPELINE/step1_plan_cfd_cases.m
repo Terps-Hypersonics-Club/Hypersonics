@@ -45,6 +45,18 @@ Rgas      = 287.05;
 recovery  = 0.71^(1/3);% turbulent recovery factor, for T_aw (same as export_cfd_heating.m)
 makePlots = true;
 
+% CFD runs you ALREADY HAVE (skip the planning): one row per run, VTK in cfd/.
+% Each trajectory time is assigned to the nearest run in (Mach, AoA, density),
+% weighted by dMach, dAlpha and a factor-100 density change (scaling corrects density, not Mach/AoA). Leave empty {} to plan new cases.
+fixedCases = {
+%   VTK file in cfd/               Mach   AoA[deg]  altitude[km]
+    'Mach8_aoa1_SeaLevel.vtk',     8,     1,        0
+    'Mach8_aoa2_24km.vtk',         8,     2,        24
+    'Mach7_aoa4_30km.vtk',         7,     4,        30
+    'Mach6_aoa4_25km.vtk',         6,     4,        25
+    'Mach3_aoa-1_SeaLevel.vtk',    3,    -1,        0
+};
+
 outDir = fullfile(here, 'outputs');
 if ~exist(outDir, 'dir'), mkdir(outDir); end
 [~, trajName] = fileparts(trajFile);
@@ -73,6 +85,41 @@ M_isa = V ./ sqrt(gamma*Rgas*T_inf);
 fprintf('Trajectory: %d points, t = %.1f-%.1f s (dt %.3f s)\n', n, t(1), t(end), median(diff(t)));
 fprintf('Mach %.2f-%.2f, AoA %+.2f to %+.2f deg, altitude %.0f-%.0f m\n', min(M), max(M), min(alpha), max(alpha), min(alt), max(alt));
 fprintf('Mach check vs V/a(ISA): max difference %.3f\n', max(abs(M_isa - M)));
+
+%% ---------------- Runs you already have: assign, scale, write, stop ----------------
+if ~isempty(fixedCases)
+    nC  = size(fixedCases, 1);
+    cM  = cell2mat(fixedCases(:,2));  cA = cell2mat(fixedCases(:,3));  cAlt = 1e3*cell2mat(fixedCases(:,4));
+    [cT, cP, cRho] = isa1976(cAlt);
+    cV   = cM .* sqrt(gamma*Rgas*cT);
+    cTaw = cT .* (1 + recovery*(gamma-1)/2 .* cM.^2);
+    D = ((M - cM')/dMach).^2 + ((alpha - cA')/dAlpha).^2 + ((log(rho) - log(cRho'))/log(100)).^2;   % density is corrected by the scaling, so weighted lightly
+    [~, caseID] = min(D, [], 2);
+    hScaleAcre = (rho.*V).^0.8 ./ (cRho(caseID).*cV(caseID)).^0.8;
+    hScaleStag = sqrt(rho).*V ./ (sqrt(cRho(caseID)).*cV(caseID));
+    TawScale   = T_aw ./ cTaw(caseID);
+    pScale     = qdyn ./ (0.5*cRho(caseID).*cV(caseID).^2);
+    dt = [diff(t); 0];
+    fprintf('\n%d existing CFD runs, each trajectory time assigned to the nearest:\n', nC);
+    fprintf('  %-26s %5s %6s %7s | %7s %8s | %s\n', 'VTK_file', 'Mach', 'AoA', 'alt[km]', 'time[s]', 'max|dM|', 'h scale range');
+    for c = 1:nC
+        k = caseID == c;
+        if ~any(k), fprintf('  %-26s (never nearest: unused)\n', fixedCases{c,1}); continue; end
+        fprintf('  %-26s %5.2f %+6.2f %7.1f | %7.0f %8.2f | %.2f-%.2f\n', fixedCases{c,1}, cM(c), cA(c), cAlt(c)/1e3, ...
+            sum(dt(k)), max(abs(M(k) - cM(c))), min(hScaleAcre(k)), max(hScaleAcre(k)));
+    end
+    csvCases = fullfile(outDir, [trajName '_cfd_cases.csv']);
+    csvSched = fullfile(outDir, [trajName '_load_schedule.csv']);
+    t0 = arrayfun(@(c) min([t(caseID == c); NaN]), (1:nC)');
+    t1 = arrayfun(@(c) max([t(caseID == c); NaN]), (1:nC)');
+    writetable(table((1:nC)', fixedCases(:,1), t0, t1, cM, cA, cAlt, cP, cT, ...
+        'VariableNames', {'Case','VTK_file','t_start_s','t_end_s','Mach','Alpha_deg','Altitude_m','p_inf_Pa','T_inf_K'}), csvCases);
+    writetable(table(t, caseID, M, alpha, alt, p_inf, T_inf, rho, hScaleAcre, hScaleStag, TawScale, pScale, ...
+        'VariableNames', {'Time_s','Case','Mach','Alpha_deg','Altitude_m','p_inf_Pa','T_inf_K','rho_kgm3', ...
+        'hScaleAcreage','hScaleStag','TawScale','pScale'}), csvSched);
+    fprintf('\nWrote:\n  %s\n  %s\n', csvCases, csvSched);
+    return
+end
 
 %% ---------------- Segment the trajectory ----------------
 keep = M >= machMin;

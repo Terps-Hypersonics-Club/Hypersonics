@@ -34,9 +34,13 @@ addpath(fullfile(here, 'lib'));
 %% ---------------- User inputs ----------------
 runName  = 'WAV_RID_9_FINS';
 trajName = 'Trajectory_WAV_RID_COMP_aero';   % must match the trajectory step1 used
-stlFile  = fullfile(here, 'geometry', 'WAV_RID_9_FINS.stl');   % '' = keep the CFD frame (only if ANSYS uses it too)
-stlUnits = 'm';                              % units of the STL: 'm' or 'mm'
-T_wall_cfd = 315;          % [K] isothermal wall temperature the CHAMPS runs used
+stlFile  = fullfile(here, 'geometry', 'WAV_RID_9B.stl');   % '' = keep the CFD frame (only if ANSYS uses it too)
+stlUnits = 'mm';                             % units of the STL: 'm' or 'mm'
+wallBC   = 'radiative';    % CHAMPS wall BC of the runs in cfd/:
+                           % 'isothermal': h = q_w/(T_aw - T_wall_cfd). Cold-wall h, conservative.
+                           % 'radiative' : h = q_w/(T_aw - T_w) with each cell's own radiative-
+                           %   equilibrium T_w. Hot-wall h: body heating 2-3x LOW while the structure is cold.
+T_wall_cfd = 315;          % [K] isothermal wall temperature (isothermal runs only)
 scaleToTrajectory = true;  % scale each case to the trajectory freestream (see header)
 tableTol = 0.01;           % thin the time table: keep rows needed to reproduce the
                            % scale factors within 1% by linear interpolation
@@ -75,9 +79,13 @@ for c = 1:nC
         error(['%s is on a different CFD surface mesh than %s. All cases must be run on ' ...
                'the same CHAMPS geometry file.'], C.VTK_file{c}, C.VTK_file{1});
     end
-    % the runs must be isothermal at T_wall_cfd: check the wall temperature CHAMPS reports
+    % check the wall temperature CHAMPS reports matches the wall BC declared above
     tw = m.Tw(m.Tw > 0);
-    if isempty(tw) || abs(median(tw) - T_wall_cfd) > 1 || (prctile(tw, 95) - prctile(tw, 5)) > 1
+    isIso = ~isempty(tw) && abs(median(tw) - T_wall_cfd) <= 1 && (prctile(tw, 95) - prctile(tw, 5)) <= 1;
+    if strcmp(wallBC, 'radiative')
+        if isIso, error('%s looks isothermal (%g K wall): set wallBC = ''isothermal''.', C.VTK_file{c}, median(tw)); end
+        fprintf('  radiative wall: T_w median %.0f K (5-95%% %.0f-%.0f K)\n', median(tw), prctile(tw, 5), prctile(tw, 95));
+    elseif ~isIso
         error(['%s does not look like an isothermal %g K run (wall temperature median %.0f K, ' ...
                '5-95%% %.0f-%.0f K). Rerun it with the isothermal wall, or set T_wall_cfd.'], ...
                C.VTK_file{c}, T_wall_cfd, median(tw), prctile(tw, 5), prctile(tw, 95));
@@ -146,6 +154,15 @@ if strcmpi(units, 'mm'), V = V / 1000; end
 Cc = (V(F(:,1),:) + V(F(:,2),:) + V(F(:,3),:)) / 3;
 N = cross(V(F(:,2),:) - V(F(:,1),:), V(F(:,3),:) - V(F(:,1),:), 2);
 N = N ./ max(vecnorm(N, 2, 2), eps);
+% Half-model STL (cut at y = 0, the usual ANSYS setup) vs full-body CFD: mirror the
+% STL across y = 0 for the alignment only, so the full CFD surface has something to match.
+ySpanCFD = max(cfdPts(:,2)) - min(cfdPts(:,2));
+ySpanSTL = max(Cc(:,2)) - min(Cc(:,2));
+if (max(Cc(:,2)) < 1e-4 || min(Cc(:,2)) > -1e-4) && ySpanCFD > 1.5*ySpanSTL
+    fprintf('STL is a half model (one side of y = 0): mirroring it across y = 0 for the alignment.\n');
+    Cc = [Cc; Cc .* [1 -1 1]];
+    N  = [N;  N  .* [1 -1 1]];
+end
 tree = KDTreeSearcher(Cc);
 shift = (max(cfdPts) + min(cfdPts))/2 - (max(Cc) + min(Cc))/2;
 for it = 1:30

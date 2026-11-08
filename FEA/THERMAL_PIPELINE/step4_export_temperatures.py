@@ -3,15 +3,18 @@
 # the solve. Set OUT and TIMES below first, then:
 #   exec(open(r"C:\...\Hypersonics\FEA\THERMAL_PIPELINE\step4_export_temperatures.py").read())
 #
-# Exports the temperature field at each time in TIMES to its own text file
-# (Node Number, X, Y, Z, Temperature). Uses a separate "Snapshot export"
-# Temperature result so your own results are left alone.
+# Exports the temperature field (T_*.txt) and the total heat flux field (q_*.txt) at
+# each time in TIMES (Node Number, X, Y, Z, value). Uses separate "Snapshot export"
+# result objects so your own results are left alone.
 # Needs File > Options > Export > Text File Export > Include Node Location = Yes.
 import os
 
 OUT   = r"C:\Users\Kevin Kyle\Documents\Hypersonics\FEA\THERMAL_PIPELINE\outputs\snapshots"   # CHANGE to your path
-TIMES = [3.2, 31.252, 197.6, 526.0, 851.16]      # [s] pick times that exist in the solved results
+END_S = 824.0                                    # [s] last time in the solve
+TIMES = [float(t) for t in range(0, int(END_S), 10)] + [END_S]   # every 10 s of flight, plus the end
 NAME  = "Snapshot export"
+# Mechanical only has results at the times it stored (Output Controls). If a requested
+# time is not stored it shows the nearest stored set; the log records which time it used.
 
 if not os.path.isdir(OUT):
     os.makedirs(OUT)
@@ -32,21 +35,29 @@ for a in Model.Analyses:
 sol = analysis.Solution
 tree = ExtAPI.DataModel.Tree
 
-res = None
-for c in sol.Children:
-    if c.Name == NAME:
-        res = c
-if res is None:
-    res = sol.AddTemperature()
-    res.Name = NAME
-tree.Activate(res)
-res.By = SetDriverStyle.Time
+def result(name, add):
+    # reuse our own result object if an earlier run made it, so user results stay untouched
+    for c in sol.Children:
+        if c.Name == name:
+            return c
+    r = add()
+    r.Name = name
+    return r
+
+
+res = result(NAME, sol.AddTemperature)
+flux = result(NAME + " (heat flux)", sol.AddTotalHeatFlux)   # needs Output Controls > Calculate Thermal Flux = Yes
+for r in (res, flux):
+    tree.Activate(r)
+    r.By = SetDriverStyle.Time
 
 for t in TIMES:
-    res.DisplayTime = Quantity(t, "s")
-    res.EvaluateAllResults()
-    path = os.path.join(OUT, "T_%07.2fs.txt" % t)
-    res.ExportToTextFile(path)
-    say("t = %8.2f s  ->  %s" % (t, path))
+    for r, tag in ((res, "T"), (flux, "q")):
+        r.DisplayTime = Quantity(t, "s")
+        r.EvaluateAllResults()
+        used = r.DisplayTime.Value        # the time Mechanical actually shows
+        path = os.path.join(OUT, "%s_%06.1fs.txt" % (tag, t))
+        r.ExportToTextFile(path)
+        say("%s t = %6.1f s (result at %8.3f s), max %.4g  ->  %s" % (tag, t, used, r.Maximum.Value, path))
 
 say("Done: %d snapshots in %s" % (len(TIMES), OUT))

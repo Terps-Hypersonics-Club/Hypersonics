@@ -22,21 +22,24 @@ clear; clc; close all;
 here = fileparts(mfilename('fullpath'));
 addpath(fullfile(here, 'Calls'));
 
-%% ---------------- User inputs ----------------
-runName = 'WAV_RID_traj9';
-stlFile = fullfile(here, '% FOLDER CONTAINING STL %', '% STIL FILE%.STL');   % geometry frame the loads are moved into
-stlUnits = 'm';
-vtkDir  = fullfile(here, '% FOLDER CONTAINING VTKS % ');
+%% ---------------- User inputs (EDIT ALL FOUR) ----------------
+runName = 'WAV_RID_9B';
+% STL of the vehicle's outer surface, exported from the SAME geometry you mesh in ANSYS
+% (half model is fine). Folder and file name relative to this script.
+stlFile = fullfile(here, 'geometry', 'WAV_RID_9B.stl');
+stlUnits = 'mm';          % units of that STL: 'mm' (Discovery/SolidWorks default) or 'm'
+vtkDir  = fullfile(here, 'cfd');   % folder holding your CHAMPS surface VTKs
 
-% One row per case, in time order. Intervals must abut (each starts where the
-% previous one ends). Defaults = the case windows of the WAV_RID_traj9 run.
+% One row per CFD run, in flight-time order. Intervals must abut (each starts where the
+% previous one ends) and cover the whole flight. EXAMPLE ROWS: replace with your VTKs
+% and the time window each one should cover.
 caseList = {
 %   name           vtk file                          t_start [s]  t_end [s]
-    'M8_a0',       'Mach7.98_aoa0.38_11.8km.vtk',    0,           71.5
-    'M7_a3p5',     'Mach6.76_aoa3.61_25km.vtk',      71.5,        526.0
-    'M4_a7',       'Mach3.87_aoa6.96_21km.vtk',      526.0,       779.7
-    'M3_a1p5',     'Mach3.25_aoa1.68_26.5km.vtk',    779.7,       810.3
-    'M3_aneg1p5',  'Mach3.56_aoa-1.48_15.3km.vtk',   810.3,       851.2
+    'M8_SL',       'Mach8_aoa1_SeaLevel.vtk',        0,           40
+    'M8_24km',     'Mach8_aoa2_24km.vtk',            40,          75
+    'M7_30km',     'Mach7_aoa4_30km.vtk',            75,          240
+    'M6_25km',     'Mach6_aoa4_25km.vtk',            240,         730
+    'M3_SL',       'Mach3_aoa-1_SeaLevel.vtk',       730,         824
 };
 
 % mapping options (same meaning as in build_ansys_loads.m; only the geometry
@@ -50,6 +53,8 @@ outDir = fullfile(here, 'Exports');
 if ~exist(outDir, 'dir'), mkdir(outDir); end
 
 %% ---------------- Cases ----------------
+assert(exist(stlFile, 'file') == 2, 'STL not found: %s  (set stlFile at the top)', stlFile);
+assert(exist(vtkDir, 'dir') == 7, 'VTK folder not found: %s  (set vtkDir at the top)', vtkDir);
 cs = cell2table(caseList, 'VariableNames', {'name','vtk','t_start','t_end'});
 nC = height(cs);
 cs.vtkPath = fullfile(vtkDir, cs.vtk);
@@ -120,6 +125,12 @@ if strcmpi(units, 'mm'), V = V / 1000; end
 C = (V(F(:,1),:) + V(F(:,2),:) + V(F(:,3),:)) / 3;
 N = cross(V(F(:,2),:) - V(F(:,1),:), V(F(:,3),:) - V(F(:,1),:), 2);
 N = N ./ max(vecnorm(N, 2, 2), eps);
+% Half-model STL (cut at y = 0) vs full-body CFD: mirror the STL across y = 0 for the
+% alignment only. Without this the loads land ~57 mm off in y on a half model.
+if (max(C(:,2)) < 1e-4 || min(C(:,2)) > -1e-4) && range(cfdPts(:,2)) > 1.5*range(C(:,2))
+    fprintf('STL is a half model (one side of y = 0): mirroring it across y = 0 for the alignment.\n');
+    C = [C; C .* [1 -1 1]];  N = [N; N .* [1 -1 1]];
+end
 tree = KDTreeSearcher(C);
 shift = (max(cfdPts) + min(cfdPts))/2 - (max(C) + min(C))/2;
 for it = 1:30

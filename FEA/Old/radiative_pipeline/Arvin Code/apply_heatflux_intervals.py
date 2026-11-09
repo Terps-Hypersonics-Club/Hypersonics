@@ -24,8 +24,8 @@
 import os
 
 # ---------------- user settings ----------------
-EXPORTS     = r"C:\Users\Kevin Kyle\Documents\Hypersonics\FEA\Exports"
-RUN_NAME    = "WAV_RID_traj9"
+EXPORTS     = r"C:\CHANGE\ME\Exports"   # the Exports folder the MATLAB script wrote (next to it)
+RUN_NAME    = "WAV_RID_9B"              # same as runName in the MATLAB script
 SKIN_NS     = "Skin"          # named selection of the heated outer faces
 ANALYSIS    = None            # analysis name, or None = first Transient Thermal
 
@@ -272,5 +272,5 @@ if SETUP_STEPS:
         s.SetMaximumTimeStep(n, Quantity(T_MAX_S, "s"))
     say("Analysis Settings: %d steps ending at %s s" % (len(ends), ", ".join(["%.1f" % e for e in ends])))
 
-say("Done. By hand on Imported Heat Flux: Tabular Loading = Ramped, mapping = Nearest, "
-    "Outside Option = Ignore; then right-click > Import Load and check contours at a time inside each interval.")
+say("Done. By hand on Imported Heat Flux: Tabular Loading = Ramped, Weighting = Distance Based Average, "
+    "Number of Points = 1; then right-click > Import Load and check every outer face is colored (gray = missing from Skin).")
